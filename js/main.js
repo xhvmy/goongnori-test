@@ -570,9 +570,11 @@ window.addEventListener('resize', layoutMapPins);
 document.addEventListener('DOMContentLoaded', () => {
   checkIdleTimeout(); // currentLang/progressStep 초기화보다 먼저 — 자리비움 만료 시 라우팅에 반영되도록
 
-  // 로컬 개발 중(localhost)에는 개발자도구 차단을 걸지 않음 — 실제 배포 도메인에서만 동작
+  // 로컬 개발 중(localhost)이거나 goongnori-test(디버깅/확인용 임시 배포)에는
+  // 개발자도구 차단을 걸지 않음 — 실제 운영 도메인이 정해지면 그때만 동작하도록
   const isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
-  if (!isLocalDev) setupContentProtection();
+  const isTestDeploy = location.hostname === 'xhvmy.github.io' && location.pathname.startsWith('/goongnori-test/');
+  if (!isLocalDev && !isTestDeploy) setupContentProtection();
 
   setupLightbox();
 
