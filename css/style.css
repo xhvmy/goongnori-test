@@ -648,6 +648,14 @@ button {
   padding: calc(clamp(56px, 15dvh, 160px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 10dvh, 103px) + env(safe-area-inset-bottom, 0px));
 }
 
+/* object-fit:cover는 기본적으로 중앙을 기준으로 잘라서, 화면 비율이 기기마다 다르면
+   사진 속 마당 바닥이 화면에서 차지하는 비중도 달라짐 — 궁이는 항상 화면 하단에
+   고정되어 있으므로, 사진도 하단(바닥) 기준으로 잘리게 고정해 기기와 무관하게
+   궁이가 항상 마당 바닥 위에 서 있는 것처럼 보이도록 함 */
+.gate-appear .screen__bg {
+  object-position: 50% 100%;
+}
+
 .gate-appear__bottom {
   position: relative;
   z-index: 2;
