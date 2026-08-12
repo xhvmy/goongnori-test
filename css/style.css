@@ -340,8 +340,12 @@ button {
   flex-direction: column;
   background: var(--color-bg-canvas);
   opacity: 0;
-  /* 안전망: 짧은/작은 화면에서 내용이 뷰포트보다 커지면 잘리지 않고 스크롤되게 함 */
+  /* 안전망: 짧은/작은 화면에서 내용이 뷰포트보다 커지면 잘리지 않고 스크롤되게 함.
+     overflow-x를 명시하지 않으면 overflow-y:auto 때문에 브라우저가 overflow-x도
+     암묵적으로 auto로 계산해버려 — 내용이 조금이라도 옆으로 넘치면(둥근 모서리 그림자 등)
+     좌우로도 스크롤이 가능해짐. 세로 스크롤만 원하므로 명시적으로 막음 */
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
