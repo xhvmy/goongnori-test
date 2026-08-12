@@ -22,20 +22,6 @@ let progressStep = 0;
 let currentLang = sessionStorage.getItem(LANG_KEY) || null;
 let currentPin  = '';
 
-// Safari는 주소창/하단 툴바가 접혔다 펼쳐지며 실제 보이는 뷰포트 높이가 계속 바뀌는데,
-// 특히 페이지를 처음 열었을 때(툴바가 펼쳐진 상태)는 100dvh가 그 순간 기준으로 계산되어
-// 이후 스크롤 등으로 툴바가 접혀도 레이아웃이 못 따라가는 경우가 있음 — window.innerHeight를
-// 직접 읽어 --vh100으로 반영하는 게 더 확실함 (#app-shell/body/.mobile-wrap에서 사용)
-function setViewportHeightVar() {
-  document.documentElement.style.setProperty('--vh100', window.innerHeight + 'px');
-}
-setViewportHeightVar();
-window.addEventListener('resize', setViewportHeightVar);
-window.addEventListener('orientationchange', setViewportHeightVar);
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', setViewportHeightVar);
-}
-
 async function sha256Hex(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -109,11 +95,12 @@ const DARK_SCREENS = new Set(['language-select', 'gate-appear']);
 
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(sec => {
-    sec.classList.toggle('is-active', sec.dataset.screen === name);
+    const isActive = sec.dataset.screen === name;
+    sec.classList.toggle('is-active', isActive);
+    // 화면은 재사용되는 DOM 요소라 (예: Chapter 1→2) 이전 스크롤 위치가 남아있을 수 있음 —
+    // 새로 보여줄 때마다 맨 위로 리셋
+    if (isActive) sec.scrollTop = 0;
   });
-  // 화면(문서) 자체가 스크롤되는 구조라 — 재사용되는 화면(예: Chapter 1→2)의 이전 스크롤
-  // 위치가 남아있을 수 있으므로 전환마다 맨 위로 리셋
-  window.scrollTo(0, 0);
 
   const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   if (themeColorMeta) {

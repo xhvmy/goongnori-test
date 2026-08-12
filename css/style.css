@@ -92,7 +92,7 @@ body {
   font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
   font-weight: 400;
   line-height: 1.8;
-  min-height: var(--vh100, 100dvh);
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
   overflow-x: hidden;
@@ -123,7 +123,7 @@ button {
 
 .mobile-wrap {
   width: 100%;
-  min-height: var(--vh100, 100dvh);
+  min-height: 100dvh;
   position: relative;
   overflow-x: clip;
 }
@@ -329,27 +329,20 @@ button {
    ============================================================ */
 #app-shell {
   position: relative;
-  /* --vh100은 JS(setViewportHeightVar)가 window.innerHeight로 갱신하는 실측 px 값.
-     Safari는 주소창/하단 툴바가 접혔다 펼쳐지며 실제 보이는 높이가 바뀌는데, 이 값을
-     기준으로 삼는 게 100dvh보다 더 즉각적으로 반영됨 — JS가 아직 안 돌았을 때만 100dvh로 폴백 */
-  min-height: var(--vh100, 100dvh);
+  height: 100dvh;
+  overflow: hidden;
 }
 
-/* 화면(.screen)이 자체적으로 overflow-y:auto를 갖고 내부 스크롤을 하면(예전 방식),
-   문서(body) 자체는 절대 스크롤되지 않음 — Safari는 "문서 자체가 스크롤되는지"를 보고
-   주소창/하단 툴바를 접었다 펼치므로, 내부 스크롤만 쓰면 Safari 크롬이 항상 펼쳐진
-   상태로 고정되어 화면을 덜 채워 보임(구글 등 일반 사이트에서 스크롤하면 상단바가
-   시간표시 영역까지, 하단바가 얇아지며 그 자리로 콘텐츠가 보이는 것과 대비됨).
-   그래서 각 화면은 더 이상 자체 스크롤을 갖지 않고 문서 흐름에 참여하는 일반 블록이 되고,
-   콘텐츠가 한 화면보다 길면 body/문서 자체가 늘어나며 스크롤됨 — Safari가 이 스크롤을
-   감지해 자연스럽게 크롬을 접어줌 */
 .screen {
-  position: relative;
+  position: absolute;
+  inset: 0;
   display: none;
   flex-direction: column;
-  min-height: var(--vh100, 100dvh);
   background: var(--color-bg-canvas);
   opacity: 0;
+  /* 안전망: 짧은/작은 화면에서 내용이 뷰포트보다 커지면 잘리지 않고 스크롤되게 함 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .screen.is-active {
@@ -446,10 +439,6 @@ button {
   align-items: center;
   justify-content: center;
   gap: clamp(24px, 6.9dvh, 66px);
-  /* Safari 크롬 접힘 효과보다 "스크롤 없이 항상 꽉 채움"이 우선 — .enroute와 동일하게
-     콘텐츠가 정확히 한 뷰포트에 맞도록 튜닝되어 있으므로 고정 height + overflow:hidden 유지 */
-  height: 100dvh;
-  overflow: hidden;
   padding: calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-top, 0px)) clamp(20px, 8.53vw, 38px) calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-bottom, 0px));
 }
 
@@ -514,9 +503,6 @@ button {
    ============================================================ */
 .gate-pin {
   align-items: center;
-  /* lang-select와 동일 — 스크롤 없이 항상 꽉 채움이 우선 */
-  height: 100dvh;
-  overflow: hidden;
 }
 
 /* Language Select/Chapter 화면과 동일한 패턴: justify-content:center로 3개 그룹을
@@ -655,9 +641,6 @@ button {
 .gate-appear {
   align-items: center;
   justify-content: flex-end;
-  /* lang-select와 동일 — 스크롤 없이 항상 꽉 채움이 우선 */
-  height: 100dvh;
-  overflow: hidden;
   padding: calc(clamp(56px, 15dvh, 160px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 10dvh, 103px) + env(safe-area-inset-bottom, 0px));
 }
 
@@ -853,11 +836,6 @@ button {
    애초에 스크롤 없이 한 화면에 딱 맞도록 설계했으므로 여기서만 고정 height + overflow:hidden 유지 */
 .enroute {
   align-items: center;
-  /* JS로 계산한 --vh100은 Safari의 크롬 접힘/펼침과 타이밍이 어긋나 화면이 실제 보이는
-     영역보다 작게(또는 크게) 잡힐 수 있음 — 브라우저가 실시간으로 추적하는 네이티브
-     100dvh를 직접 써서 항상 실제 보이는 높이와 정확히 맞도록 함 */
-  height: 100dvh;
-  overflow: hidden;
   padding: 0 0 calc(clamp(20px, 4.5dvh, 40px) + env(safe-area-inset-bottom, 0px));
 }
 
