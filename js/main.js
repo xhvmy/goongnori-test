@@ -105,12 +105,11 @@ const DARK_SCREENS = new Set(['language-select', 'gate-appear']);
 
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(sec => {
-    const isActive = sec.dataset.screen === name;
-    sec.classList.toggle('is-active', isActive);
-    // 화면은 재사용되는 DOM 요소라 (예: Chapter 1→2) 이전 스크롤 위치가 남아있을 수 있음 —
-    // 새로 보여줄 때마다 맨 위로 리셋
-    if (isActive) sec.scrollTop = 0;
+    sec.classList.toggle('is-active', sec.dataset.screen === name);
   });
+  // 화면(문서) 자체가 스크롤되는 구조라 — 재사용되는 화면(예: Chapter 1→2)의 이전 스크롤
+  // 위치가 남아있을 수 있으므로 전환마다 맨 위로 리셋
+  window.scrollTo(0, 0);
 
   const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   if (themeColorMeta) {
