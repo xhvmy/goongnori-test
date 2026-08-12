@@ -547,8 +547,22 @@ function openLightbox(src, alt) {
   document.getElementById('lightbox').classList.add('is-active');
 }
 
+// 라이트박스로 이미지를 확대해서 보는 동안 브라우저 자체의 핀치 줌을 쓴 경우, 닫아도
+// 그 확대 상태가 앱 전체에 그대로 남아있음 — viewport meta의 maximum-scale을 아주
+// 잠깐 1로 걸었다가 되돌리는 방식으로 강제로 1배율로 리셋(이후엔 다시 확대 가능)
+function resetPageZoom() {
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (!viewport) return;
+  const original = viewport.getAttribute('content');
+  viewport.setAttribute('content', original + ', maximum-scale=1.0, user-scalable=no');
+  requestAnimationFrame(() => {
+    viewport.setAttribute('content', original);
+  });
+}
+
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('is-active');
+  resetPageZoom();
 }
 
 function setupLightbox() {
