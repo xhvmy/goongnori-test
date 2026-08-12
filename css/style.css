@@ -92,7 +92,7 @@ body {
   font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
   font-weight: 400;
   line-height: 1.8;
-  min-height: 100dvh;
+  min-height: var(--vh100, 100dvh);
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
   overflow-x: hidden;
@@ -123,7 +123,7 @@ button {
 
 .mobile-wrap {
   width: 100%;
-  min-height: 100dvh;
+  min-height: var(--vh100, 100dvh);
   position: relative;
   overflow-x: clip;
 }
@@ -329,7 +329,10 @@ button {
    ============================================================ */
 #app-shell {
   position: relative;
-  height: 100dvh;
+  /* --vh100은 JS(setViewportHeightVar)가 window.innerHeight로 갱신하는 실측 px 값.
+     Safari는 주소창/하단 툴바가 접혔다 펼쳐지며 실제 보이는 높이가 바뀌는데, 이 값을
+     기준으로 삼는 게 100dvh보다 더 즉각적으로 반영됨 — JS가 아직 안 돌았을 때만 100dvh로 폴백 */
+  height: var(--vh100, 100dvh);
   overflow: hidden;
 }
 

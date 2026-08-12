@@ -18,6 +18,20 @@ let progressStep = 0;
 let currentLang = localStorage.getItem(LANG_KEY) || null;
 let currentPin  = '';
 
+// Safari는 주소창/하단 툴바가 접혔다 펼쳐지며 실제 보이는 뷰포트 높이가 계속 바뀌는데,
+// 특히 페이지를 처음 열었을 때(툴바가 펼쳐진 상태)는 100dvh가 그 순간 기준으로 계산되어
+// 이후 스크롤 등으로 툴바가 접혀도 레이아웃이 못 따라가는 경우가 있음 — window.innerHeight를
+// 직접 읽어 --vh100으로 반영하는 게 더 확실함 (#app-shell/body/.mobile-wrap에서 사용)
+function setViewportHeightVar() {
+  document.documentElement.style.setProperty('--vh100', window.innerHeight + 'px');
+}
+setViewportHeightVar();
+window.addEventListener('resize', setViewportHeightVar);
+window.addEventListener('orientationchange', setViewportHeightVar);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', setViewportHeightVar);
+}
+
 async function sha256Hex(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -47,6 +61,18 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
+
+  // 새 배포로 서비스워커가 교체되면(특히 이미지 파일명이 바뀐 경우) 이미 열려있던
+  // 탭은 메모리에 남은 옛 content.js가 이제 존재하지 않는 파일 경로를 계속 참조해
+  // 이미지가 깨져 보일 수 있음 — 새 서비스워커가 제어권을 넘겨받는 순간 한 번 새로고침해서
+  // 항상 최신 HTML/JS/이미지 참조로 맞춰줌 (무한 새로고침 방지용 플래그 + 최초 설치는 제외)
+  let swRefreshed = false;
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (swRefreshed || !hadController) return;
+    swRefreshed = true;
+    window.location.reload();
+  });
 }
 
 // ── 콘텐츠 보호 (캐주얼한 저장/열람 방지 — 완전 차단은 아님) ──
@@ -70,6 +96,13 @@ function setupContentProtection() {
 // ============================================================
 //  화면 전환
 // ============================================================
+// 어두운 사진 배경 화면(언어선택/Gate 등장)에서는 Safari가 주소창·하단 툴바를 이 값으로
+// 칠하는데, theme-color가 계속 밝은 크림색 고정이면 어두운 사진 위/아래로 크림색 띠가
+// 떠보임 — 화면 전환마다 실제 배경에 맞게 갱신
+const THEME_COLOR_LIGHT = '#fbf6ee';
+const THEME_COLOR_DARK = '#1c1a16';
+const DARK_SCREENS = new Set(['language-select', 'gate-appear']);
+
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(sec => {
     const isActive = sec.dataset.screen === name;
@@ -78,6 +111,11 @@ function showScreen(name) {
     // 새로 보여줄 때마다 맨 위로 리셋
     if (isActive) sec.scrollTop = 0;
   });
+
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeColorMeta) {
+    themeColorMeta.setAttribute('content', DARK_SCREENS.has(name) ? THEME_COLOR_DARK : THEME_COLOR_LIGHT);
+  }
 }
 
 // ============================================================
