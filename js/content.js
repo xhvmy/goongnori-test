@@ -449,7 +449,7 @@ const MAP_LEGEND_CTA = {
 };
 const MAPS = [
   {
-    image: 'images/03_maps/map-bg-900.png',
+    image: 'images/03_maps/map-bg-900.webp',
     fromIdx: 0, toIdx: 1, // 경복궁 → 흥례문
     text: {
       ko: { title: '흥례문으로 가는 길', stamp: n => `STAMP ${n} / 7 완료`, ...MAP_LEGEND_CTA.ko },
@@ -459,7 +459,7 @@ const MAPS = [
     },
   },
   {
-    image: 'images/03_maps/map-bg-900.png',
+    image: 'images/03_maps/map-bg-900.webp',
     fromIdx: 1, toIdx: 2, // 흥례문 → 영제교
     text: {
       ko: { title: '영제교로 가는 길', stamp: n => `STAMP ${n} / 7 완료`, ...MAP_LEGEND_CTA.ko },
@@ -469,7 +469,7 @@ const MAPS = [
     },
   },
   {
-    image: 'images/03_maps/map-bg-900.png',
+    image: 'images/03_maps/map-bg-900.webp',
     fromIdx: 2, toIdx: 3, // 영제교 → 근정전
     text: {
       ko: { title: '근정전으로 가는 길', stamp: n => `STAMP ${n} / 7 완료`, ...MAP_LEGEND_CTA.ko },
@@ -479,7 +479,7 @@ const MAPS = [
     },
   },
   {
-    image: 'images/03_maps/map-bg-900.png',
+    image: 'images/03_maps/map-bg-900.webp',
     fromIdx: 3, toIdx: 4, // 근정전 → 사정전
     text: {
       ko: { title: '사정전으로 가는 길', stamp: n => `STAMP ${n} / 7 완료`, ...MAP_LEGEND_CTA.ko },
@@ -489,7 +489,7 @@ const MAPS = [
     },
   },
   {
-    image: 'images/03_maps/map-bg-900.png',
+    image: 'images/03_maps/map-bg-900.webp',
     fromIdx: 4, toIdx: 5, // 사정전 → 수정전
     text: {
       ko: { title: '수정전으로 가는 길', stamp: n => `STAMP ${n} / 7 완료`, ...MAP_LEGEND_CTA.ko },
@@ -499,7 +499,7 @@ const MAPS = [
     },
   },
   {
-    image: 'images/03_maps/map-bg-900.png',
+    image: 'images/03_maps/map-bg-900.webp',
     fromIdx: 5, toIdx: 6, // 수정전 → 경회루
     text: {
       ko: { title: '경회루로 가는 길', stamp: n => `STAMP ${n} / 7 완료`, ...MAP_LEGEND_CTA.ko },

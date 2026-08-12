@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Deployment
+
+Live at https://xhvmy.github.io/gungnori-test/ via GitHub Pages, serving straight from the `main` branch root (`xhvmy/gungnori-test` on GitHub) — no build step, so whatever's on `main` is what's live.
+
+**After any code change in this repo, commit and push to `main` automatically** — the user wants every edit reflected on the live site without being asked each time. Write a normal descriptive commit message; no need to check in before pushing.
+
 ## Development
 
 No build step. Run a local server from the project root:

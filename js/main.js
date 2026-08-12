@@ -375,7 +375,7 @@ function renderEnroute(mapIdx) {
       const avatarCrop = document.createElement('span');
       avatarCrop.className = 'avatar-crop';
       const avatar = document.createElement('img');
-      avatar.src = 'images/avatar-default.png';
+      avatar.src = 'images/avatar-default.webp';
       avatar.alt = '';
       avatarCrop.appendChild(avatar);
       pin.appendChild(avatarCrop);
