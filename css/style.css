@@ -1,0 +1,1127 @@
+/* ============================================================
+   GOONGNORI — Mobile Website Styles
+   v2: Figma "게임형 UI" 리디자인 — 화면 단위 전환 SPA
+   ============================================================ */
+
+/* === GOOGLE FONTS === (loaded via <link> in <head>, see index.html/404.html) */
+
+/* === KMU80 (자체 호스팅 — Google Fonts에 없는 커스텀 한글 디스플레이 폰트) === */
+@font-face {
+  font-family: 'KMU80 Sungkok Semi-Serif';
+  src: url('../fonts/KMU80SungkokSemiSerif.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'KMU80 Sungkok Serif';
+  src: url('../fonts/KMU80SungkokSerif.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* === CSS VARIABLES (Figma variable collection과 1:1 매핑) === */
+:root {
+  --color-bg-canvas:         #fbf6ee;
+  --color-bg-surface:        #ffffff;
+  --color-bg-surface-raised: #ffffff;
+  --color-border-default:    #e4d5bb;
+  --color-text-primary:      #241f19;
+  --color-text-secondary:    #5c5346;
+  --color-text-on-accent:    #ffffff;
+  --color-accent-primary:    #3a6d67;
+  --color-accent-primary-pressed: #1f3f3b;
+  --color-accent-stamp:      #b8801a;
+  --color-node-completed:    #b8801a;
+  --color-node-current:      #e85d3e;
+  --color-node-locked:       #e4d5bb;
+  --color-state-error:       #c44a38;
+
+  /* 하위호환: 구 코드베이스에서 --gold/--cream 등으로 참조하던 곳(404 페이지)이 새 톤을 그대로 물려받도록 별칭 유지 */
+  --bg:          var(--color-bg-canvas);
+  --gold:        var(--color-accent-primary);
+  --gold-light:  #4d8880;
+  --gold-dim:    rgba(58, 109, 103, 0.10);
+  --gold-border: rgba(58, 109, 103, 0.30);
+  --cream:       var(--color-text-primary);
+  --cream-muted: var(--color-text-secondary);
+  --text-muted:  var(--color-text-secondary);
+  --error:       var(--color-state-error);
+
+  --font-serif:  'Cormorant Garamond', Georgia, serif;
+  --font-ko:     'Noto Serif KR', serif;
+  --font-ja:     'Noto Serif JP', serif;
+  --font-zh:     'Noto Serif SC', serif;
+  --font-display-ko: 'KMU80 Sungkok Semi-Serif', var(--font-ko);
+  --font-cta-ko:      'KMU80 Sungkok Serif', var(--font-ko);
+  --font-display-en: 'Jua', var(--font-serif);
+  --font-display-ja: 'Zen Maru Gothic', var(--font-ja);
+  --font-display-zh: 'ZCOOL KuaiLe', var(--font-zh);
+  --font-label:  'Jua', sans-serif;
+  --font-num:    'Nunito', sans-serif;
+
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-full: 9999px;
+
+  --spacing-md:  16px;
+  --spacing-lg:  24px;
+
+  --shadow-card: 0px 6px 18px -2px rgba(23, 20, 15, 0.16);
+  --shadow-cta:  0px 4px 0px 0px rgba(36, 66, 61, 0.35);
+
+  --transition:      all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+}
+
+/* === RESET === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-weight: 400;
+  line-height: 1.8;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  overflow-x: hidden;
+  touch-action: manipulation;
+  /* 콘텐츠 보호: 텍스트 선택 및 iOS 롱프레스 콜아웃(저장/복사 메뉴) 비활성화 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+.mobile-wrap {
+  width: 100%;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: clip;
+}
+
+/* 태블릿/폴더블 펼침 등 넓은 화면에서도 폰 모양 카드로 가두지 않고 화면 폭을 그대로 채움 —
+   .mobile-wrap은 항상 100% 너비. 각 화면 내부 요소들은 넓은 화면에서도 과하게 늘어나지
+   않도록 화면별 max-width로 개별 대응함 (아래 각 화면 섹션 참고) */
+
+
+/* ============================================================
+   404 PAGE (레거시 클래스 재사용 — 새 크림 톤 변수를 그대로 물려받음)
+   ============================================================ */
+.pw-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100dvh;
+  padding: 20px 24px env(safe-area-inset-bottom, 20px);
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg-canvas);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='34.64' viewBox='0 0 60 34.64' overflow='hidden'%3E%3Cg fill='none' stroke='%233a6d67' stroke-width='0.7' stroke-opacity='.12'%3E%3Cpolygon points='20,0 10,17.32 -10,17.32 -20,0 -10,-17.32 10,-17.32'/%3E%3Cpolygon points='80,0 70,17.32 50,17.32 40,0 50,-17.32 70,-17.32'/%3E%3Cpolygon points='20,34.64 10,51.96 -10,51.96 -20,34.64 -10,17.32 10,17.32'/%3E%3Cpolygon points='80,34.64 70,51.96 50,51.96 40,34.64 50,17.32 70,17.32'/%3E%3Cpolygon points='50,17.32 40,34.64 20,34.64 10,17.32 20,0 40,0'/%3E%3C/g%3E%3Cg fill='%233a6d67' fill-opacity='.14' stroke='none'%3E%3Ccircle cx='0' cy='0' r='1.5'/%3E%3Ccircle cx='60' cy='0' r='1.5'/%3E%3Ccircle cx='0' cy='34.64' r='1.5'/%3E%3Ccircle cx='60' cy='34.64' r='1.5'/%3E%3Ccircle cx='30' cy='17.32' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 34.64px;
+  background-repeat: repeat;
+  animation: pwFade 0.4s ease both;
+}
+
+.pw-divider {
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  position: relative;
+}
+
+.pw-divider::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: inherit;
+  opacity: 0.35;
+}
+
+.pw-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  padding: 10px 0 8px;
+  border-top: 1px solid rgba(58, 109, 103, 0.15);
+  animation: fadeIn 0.5s ease 0.6s both;
+  position: absolute;
+  bottom: max(env(safe-area-inset-bottom, 16px), 16px);
+  left: 0;
+  right: 0;
+}
+
+.pw-footer-en {
+  font-family: var(--font-serif);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(58, 109, 103, 0.55);
+}
+
+.pw-footer-ko {
+  font-family: var(--font-ko);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(58, 109, 103, 0.4);
+  font-weight: 300;
+}
+
+.nf-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding-bottom: 40px;
+  animation: pinEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+
+.nf-logo {
+  height: 60px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}
+
+.nf-code {
+  font-family: var(--font-serif);
+  font-size: clamp(88px, 22vw, 128px);
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  opacity: 0.55;
+  margin-top: 4px;
+}
+
+.nf-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nf-sub {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  line-height: 2.2;
+}
+
+.nf-sub span { display: block; }
+
+.nf-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 12px;
+  padding: 14px 36px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  text-decoration: none;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-card);
+}
+
+.nf-btn .nf-btn-ko {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+
+.nf-btn .nf-btn-other {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+.nf-btn:active {
+  transform: scale(0.97);
+  background: var(--gold-dim);
+  border-color: var(--gold);
+}
+
+.nf-timer {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  opacity: 0.55;
+  line-height: 2.2;
+}
+
+.nf-timer span { display: block; }
+
+
+/* ============================================================
+   ANIMATIONS (공용)
+   ============================================================ */
+@keyframes pwFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pinEntry {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%      { transform: translateX(-8px); }
+  30%      { transform: translateX(8px); }
+  45%      { transform: translateX(-6px); }
+  60%      { transform: translateX(6px); }
+  75%      { transform: translateX(-3px); }
+  90%      { transform: translateX(3px); }
+}
+
+
+/* ============================================================
+   화면 전환 시스템 — 화면 단위 SPA
+   ============================================================ */
+#app-shell {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--color-bg-canvas);
+  opacity: 0;
+  /* 안전망: 짧은/작은 화면에서 내용이 뷰포트보다 커지면 잘리지 않고 스크롤되게 함 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.screen.is-active {
+  display: flex;
+  animation: fadeIn 0.35s ease both;
+  opacity: 1;
+}
+
+.screen__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.screen__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+/* 귀갑문(龜甲文) 패턴 — 크림 배경 위 옅은 세라돈 격자 */
+.pattern-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='34.64' viewBox='0 0 60 34.64' overflow='hidden'%3E%3Cg fill='none' stroke='%233a6d67' stroke-width='0.7' stroke-opacity='.12'%3E%3Cpolygon points='20,0 10,17.32 -10,17.32 -20,0 -10,-17.32 10,-17.32'/%3E%3Cpolygon points='80,0 70,17.32 50,17.32 40,0 50,-17.32 70,-17.32'/%3E%3Cpolygon points='20,34.64 10,51.96 -10,51.96 -20,34.64 -10,17.32 10,17.32'/%3E%3Cpolygon points='80,34.64 70,51.96 50,51.96 40,34.64 50,17.32 70,17.32'/%3E%3Cpolygon points='50,17.32 40,34.64 20,34.64 10,17.32 20,0 40,0'/%3E%3C/g%3E%3Cg fill='%233a6d67' fill-opacity='.14' stroke='none'%3E%3Ccircle cx='0' cy='0' r='1.5'/%3E%3Ccircle cx='60' cy='0' r='1.5'/%3E%3Ccircle cx='0' cy='34.64' r='1.5'/%3E%3Ccircle cx='60' cy='34.64' r='1.5'/%3E%3Ccircle cx='30' cy='17.32' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 34.64px;
+  background-repeat: repeat;
+}
+
+/* 필(pill) CTA 버튼 — Figma Button/Primary */
+.btn-primary {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: clamp(13px, 2dvh, 19px) var(--spacing-lg);
+  background: var(--color-accent-primary);
+  color: var(--color-text-on-accent);
+  border-radius: var(--radius-full);
+  font-size: clamp(15px, 4.53vw, 20px);
+  box-shadow: var(--shadow-cta);
+  transition: var(--transition-fast);
+}
+
+.btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0px 2px 0px 0px rgba(36, 66, 61, 0.35);
+  background: var(--color-accent-primary-pressed);
+}
+
+/* 아웃라인 보조 버튼 — 외부 링크(인스타그램 등) 등 btn-primary보다 낮은 우선순위 액션용 */
+.btn-secondary {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: clamp(11px, 1.7dvh, 16px) var(--spacing-lg);
+  background: transparent;
+  color: var(--color-accent-primary);
+  border: 1.5px solid var(--color-accent-primary);
+  border-radius: var(--radius-full);
+  font-size: clamp(13px, 3.73vw, 16px);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.btn-secondary:active {
+  transform: translateY(2px);
+  background: rgba(58, 109, 103, 0.08);
+}
+
+.font-ko { font-family: var(--font-display-ko); }
+.font-en { font-family: var(--font-display-en); }
+.font-ja { font-family: var(--font-display-ja); }
+.font-zh { font-family: var(--font-display-zh); }
+.font-cta-ko { font-family: var(--font-cta-ko); }
+
+
+/* ============================================================
+   Language Select
+   ============================================================ */
+.lang-select {
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 6.9dvh, 66px);
+  padding: clamp(20px, 8.53vw, 38px);
+}
+
+.lang-select__header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.97dvh, 19px);
+}
+
+.lang-select__logo {
+  width: clamp(112px, 39.5vw, 175px);
+  height: auto;
+}
+
+.lang-select__subtitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: clamp(11px, 3.47vw, 15px);
+  color: var(--color-text-on-accent);
+  text-align: center;
+}
+
+.lang-select__buttons {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.72dvh, 17px);
+  width: 100%;
+  max-width: 366px;
+}
+
+.lang-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: clamp(12px, 2.22dvh, 21px) clamp(16px, 6.4vw, 28px);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  font-size: clamp(17px, 5.33vw, 24px);
+  transition: var(--transition-fast);
+}
+
+.lang-row:active { transform: scale(0.98); background: var(--color-bg-canvas); }
+
+.lang-row__chevron {
+  color: var(--color-text-secondary);
+  font-size: 18px;
+}
+
+
+/* ============================================================
+   Gate Screen — PIN
+   ============================================================ */
+.gate-pin {
+  align-items: center;
+}
+
+/* Language Select/Chapter 화면과 동일한 패턴: justify-content:center로 3개 그룹을
+   "하나의 뭉치"로 가운데 정렬. space-between처럼 남는 공간을 그룹 사이 개별 gap에
+   몰아넣지 않으므로, 큰 화면에서도 구성이 흐트러지지 않고 위아래 여백만 늘어남.
+   간격 자체도 완전히 고정하면 큰 화면에서 답답해 보이므로, "iPhone SE(667px 높이)에서
+   정확히 안전한 최소값" ↔ "iPhone 16 Pro Max(932px)에서 넉넉한 최대값" 두 지점을 지나는
+   1차 함수(calc(A + B*1dvh))로 계산 — 순수 % 기반 dvh와 달리 원점을 지나지 않아도 되므로
+   짧은 화면에서는 그대로, 큰 화면에서는 확실히 더 벌어짐 */
+.gate-pin__content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, calc(-18.21px + 4.528dvh), 24px);
+  padding: calc(clamp(18px, calc(-17.24px + 5.283dvh), 32px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) clamp(12px, calc(-8.14px + 3.019dvh), 20px);
+}
+
+.gate-pin__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, calc(-17.17px + 3.774dvh), 18px);
+  width: 100%;
+}
+
+.gate-pin__silhouette {
+  width: clamp(64px, 23.5vw, 104px);
+  height: clamp(64px, 23.5vw, 104px);
+  border-radius: var(--radius-full);
+}
+
+.gate-pin__title {
+  font-size: clamp(18px, 5.87vw, 26px);
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.gate-pin__dialogue {
+  width: 100%;
+  padding: clamp(14px, 5.33vw, 24px);
+  background: var(--color-bg-surface-raised);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-ko);
+  font-size: clamp(14px, 4.27vw, 19px);
+  line-height: 1.55;
+  color: var(--color-text-primary);
+}
+
+.gate-pin__pin-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.pin-slots {
+  display: flex;
+  gap: clamp(8px, 3.2vw, 14px);
+}
+
+.pin-slot {
+  width: clamp(46px, 14.93vw, 66px);
+  height: clamp(54px, 17.07vw, 76px);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-num);
+  font-size: clamp(20px, 6.4vw, 28px);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  transition: var(--transition-fast);
+}
+
+.pin-slot.is-current { border: 2px solid var(--color-accent-primary); }
+.pin-slot.is-error { border-color: var(--color-state-error); background: rgba(196, 74, 56, 0.08); }
+.pin-slot.is-success { border-color: var(--color-accent-primary); background: rgba(58, 109, 103, 0.1); }
+
+.pin-slots.shake { animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+
+.pin-error-msg {
+  min-height: 18px;
+  margin-top: -8px;
+  font-size: 12px;
+  color: var(--color-state-error);
+  text-align: center;
+  opacity: 0;
+  transition: var(--transition-fast);
+}
+
+.pin-error-msg.visible { opacity: 1; }
+
+.keypad {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, calc(-7.1px + 2.264dvh), 14px);
+}
+
+.keypad__row {
+  display: flex;
+  gap: clamp(8px, 3.73vw, 17px);
+}
+
+.key {
+  width: clamp(58px, 19.2vw, 85px);
+  height: clamp(46px, 14.93vw, 66px);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-label);
+  font-size: clamp(17px, 5.33vw, 24px);
+  color: var(--color-text-primary);
+  transition: var(--transition-fast);
+}
+
+.key:active { background: var(--color-bg-canvas); transform: scale(0.94); }
+.key--blank { background: var(--color-bg-canvas); pointer-events: none; }
+.key--backspace svg { display: block; width: clamp(20px, 5.87vw, 26px); height: clamp(20px, 5.87vw, 26px); }
+
+.keypad.locked { opacity: 0.35; pointer-events: none; }
+
+
+/* ============================================================
+   Gate 등장
+   ============================================================ */
+.gate-appear {
+  align-items: center;
+  justify-content: flex-end;
+  padding: calc(clamp(56px, 15dvh, 160px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) clamp(40px, 10dvh, 103px);
+}
+
+.gate-appear__bottom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 3dvh, 28px);
+  width: 100%;
+}
+
+.gate-appear__character {
+  width: auto;
+  height: clamp(160px, 32dvh, 300px);
+  aspect-ratio: 2 / 3;
+  object-fit: contain;
+}
+
+.gate-appear__dialogue {
+  width: 100%;
+  padding: clamp(14px, 5.33vw, 24px);
+  background: var(--color-bg-surface-raised);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-ko);
+  font-size: clamp(14px, 4.27vw, 19px);
+  line-height: 1.55;
+  color: var(--color-text-primary);
+}
+
+
+/* ============================================================
+   공용 — Stamp mini / Dialogue Card (Chapter·이동중·Closing 공유)
+   ============================================================ */
+.stamp-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-stamp);
+  font-family: var(--font-num);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-on-accent);
+  flex-shrink: 0;
+}
+
+.dialogue-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 20px 18px 18px;
+  background: var(--color-bg-surface-raised);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+/* 궁이 아바타 크롭 — 원본(avatar-default.png)은 정사각형이 아닌 세로로 긴 전신 인물컷이라
+   object-fit:cover 하나로는 Figma의 얼굴 크롭을 재현할 수 없음. Figma Avatar 컴포넌트의
+   inset(top 9.19% / right -1.44% / bottom -52.25% / left 10%)을 그대로 계산해 옮김 —
+   88px 기준 안쪽 박스가 91.44%×143.06% 크기로 top 9.19%/left 10%에 위치. */
+.avatar-crop {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-primary);
+  flex-shrink: 0;
+}
+
+.avatar-crop img {
+  position: absolute;
+  top: 9.19%;
+  left: 10%;
+  width: 91.44%;
+  height: 143.06%;
+  object-fit: cover;
+}
+
+.dialogue-card__avatar {
+  width: 44px;
+  height: 44px;
+}
+
+.dialogue-card__text {
+  flex: 1;
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+
+/* ============================================================
+   Chapter Screen
+   ============================================================ */
+.chapter__header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top, 0px) + 16px) 20px 16px;
+  flex-shrink: 0;
+}
+
+.chapter__back {
+  position: relative;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--color-text-primary);
+  flex-shrink: 0;
+  padding: 11px;
+  margin: -11px;
+}
+
+.chapter__header-title {
+  flex: 1;
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: 15px;
+  color: var(--color-text-primary);
+}
+
+.chapter__hero {
+  padding: 0 20px;
+  flex-shrink: 0;
+}
+
+.chapter__hero img {
+  width: 100%;
+  aspect-ratio: 335 / 220;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background: var(--color-border-default);
+}
+
+.chapter__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18px, 5.87vw, 24px);
+  padding: clamp(18px, 5.87vw, 24px) 20px clamp(32px, 9.6dvh, 48px);
+}
+
+.chapter__body > * { width: 100%; }
+
+/* #chapter-paragraphs는 .chapter__body의 flex 자식 "하나"라서 .chapter__body의 gap은
+   문단/이미지 묶음 전체와 대사창·제목·버튼 사이에만 적용되고, 그 안의 개별 문단·이미지끼리는
+   간격이 전혀 없었음(마진 없는 일반 block) — 여기서도 같은 gap을 줘서 문단↔이미지 간격을 맞춤 */
+#chapter-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 5.87vw, 24px);
+  width: 100%;
+}
+
+.chapter__title {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-weight: 600;
+  font-size: clamp(21px, 6.93vw, 26px);
+  color: var(--color-text-primary);
+}
+
+.chapter__paragraph {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: clamp(14px, 4.27vw, 16px);
+  line-height: 1.7;
+  color: var(--color-text-primary);
+}
+
+.chapter__image img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background: var(--color-border-default);
+}
+
+.chapter .btn-primary { margin-top: clamp(4px, 1dvh, 8px); }
+
+
+/* ============================================================
+   이동 중 (지도)
+   ============================================================ */
+.enroute {
+  align-items: center;
+  padding: 0 0 clamp(20px, 4.5dvh, 40px);
+}
+
+.enroute__header {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: calc(env(safe-area-inset-top, 0px) + 56px) 28px 0;
+  flex-shrink: 0;
+}
+
+.enroute__title {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: clamp(19px, 6.4vw, 24px);
+  color: var(--color-text-primary);
+}
+
+.enroute__subtitle {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.enroute__legend {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px 0 8px;
+  flex-shrink: 0;
+}
+
+.enroute__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.enroute__legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.enroute__legend-dot--completed { background: var(--color-node-completed); }
+.enroute__legend-dot--current   { background: var(--color-node-current); }
+.enroute__legend-dot--locked    { background: var(--color-node-locked); border: 1px solid var(--color-border-default); }
+
+/* .enroute__map은 남는 flex 공간(스크롤 없이 항상 화면에 맞춤). 슬롯 비율이 지도 원본
+   비율(376:519)과 많이 다르면(SE처럼 짧고 넓은 화면 등) 무조건 꽉 채우는 대신 크롭을
+   최대 MAP_MAX_CROP만큼만 허용하고 나머지는 레터박스로 남김 — 반대로 슬롯 비율이 지도와
+   비슷하면(16 Pro Max 등) 크롭이 거의 없어도 이미 꽉 차므로 그대로 화면을 가득 채움.
+   실제 크기는 JS(layoutMapPins)가 계산해 .enroute__map-inner에 px로 넣음 */
+.enroute__map {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.enroute__map-inner {
+  position: relative;
+}
+
+.enroute__map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.enroute__pins {
+  position: absolute;
+  inset: 0;
+}
+
+.map-pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  transform: translate(-50%, -50%);
+  font-family: var(--font-num);
+  font-weight: 600;
+}
+
+.map-pin--completed {
+  width: 22px;
+  height: 22px;
+  background: var(--color-node-completed);
+  color: var(--color-text-on-accent);
+  font-size: 11px;
+}
+
+.map-pin--locked {
+  width: 22px;
+  height: 22px;
+  background: var(--color-node-locked);
+  color: var(--color-text-secondary);
+  font-size: 11px;
+}
+
+.map-pin--current {
+  width: 30px;
+  height: 30px;
+  background: var(--color-node-current);
+  border: 4px solid var(--color-text-on-accent);
+  overflow: hidden;
+}
+
+.map-pin--current .avatar-crop {
+  width: 100%;
+  height: 100%;
+}
+
+.map-pin__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: var(--font-label);
+  font-size: 12px;
+  color: var(--color-text-primary);
+}
+
+.enroute .btn-primary {
+  position: relative;
+  z-index: 2;
+  width: auto;
+  margin-top: clamp(16px, 3.5dvh, 28px);
+  padding-left: clamp(24px, 8.53vw, 38px);
+  padding-right: clamp(24px, 8.53vw, 38px);
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   Closing Screen
+   ============================================================ */
+.closing {
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3.7dvh, 28px);
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(36px, 9.6dvh, 72px)) 28px clamp(32px, 8dvh, 60px);
+  text-align: center;
+}
+
+.closing > * { position: relative; z-index: 2; flex-shrink: 0; }
+
+.closing__avatar {
+  width: 88px;
+  height: 88px;
+}
+
+.closing__headline {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: clamp(20px, 6.4vw, 24px);
+  color: var(--color-text-primary);
+}
+
+.closing__stamps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.closing__stamp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-node-completed);
+  font-family: var(--font-num);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-on-accent);
+}
+
+.closing__summary {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.closing__farewell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 20px;
+  background: var(--color-bg-surface-raised);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.closing__farewell-name {
+  font-family: var(--font-label);
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.closing__farewell-text {
+  font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-text-primary);
+}
+
+.closing .btn-primary {
+  width: auto;
+  padding-left: clamp(24px, 8.53vw, 38px);
+  padding-right: clamp(24px, 8.53vw, 38px);
+}
+
+
+/* 태블릿/폴더블 펼침 이상 넓은 화면 — 예전엔 540px 폰 프레임 안에서만 쓰이던 값들이라
+   간격(gap)의 최대치가 작게 잡혀 있었음. 프레임을 없앤 뒤 이미지·글자는 화면 폭만큼 커지는데
+   블록 사이 간격은 예전 최대치에 묶여있어 헐렁한 내용물 사이가 좁아 보이는 문제를 해결 */
+@media (min-width: 560px) {
+  .chapter__body {
+    gap: clamp(24px, 4vw, 48px);
+    /* 히어로 이미지와 첫 텍스트 블록 사이 간격 — gap과 별개로 padding-top이 담당 */
+    padding-top: clamp(24px, 4vw, 48px);
+  }
+  #chapter-paragraphs { gap: clamp(24px, 4vw, 48px); }
+  .dialogue-card { gap: clamp(14px, 2vw, 20px); }
+  .gate-appear__bottom { gap: clamp(14px, 3vw, 36px); }
+  .gate-pin__content { gap: clamp(12px, 3vw, 32px); }
+  .gate-pin__top { gap: clamp(8px, 2vw, 22px); }
+  .closing { gap: clamp(16px, 3vw, 36px); }
+}
+
+/* ============================================================
+   Lightbox — 챕터 이미지 클릭 시 확대
+   ============================================================ */
+.chapter__hero img,
+.chapter__image img {
+  cursor: zoom-in;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 5vw, 48px);
+  background: rgba(0, 0, 0, 0.92);
+  cursor: zoom-out;
+}
+
+.lightbox.is-active {
+  display: flex;
+  animation: fadeIn 0.2s ease both;
+}
+
+.lightbox__img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* iOS Safari safe-area */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

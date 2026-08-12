@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fbf6ee" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>궁노리</title>
+  <meta name="description" content="경복궁을 신하 궁이와 함께 걷는 전통 문화 디지털 체험. 한국어, English, 日本語, 中文 지원." />
+  <!-- TODO(배포 시): og:url과 og:image를 실제 배포 도메인의 절대경로로 교체하세요 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="궁노리" />
+  <meta property="og:title" content="궁노리 — 경복궁 디지털 체험" />
+  <meta property="og:description" content="경복궁을 신하 궁이와 함께 걷는 전통 문화 디지털 체험" />
+  <meta property="og:url" content="/" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+KR:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600&family=Jua&family=Zen+Maru+Gothic:wght@700&family=ZCOOL+KuaiLe&family=Nunito:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="mobile-wrap">
+  <div id="app-shell">
+
+    <!-- ============================================================
+         Language Select
+         ============================================================ -->
+    <section id="screen-language-select" class="screen lang-select is-active" data-screen="language-select">
+      <img class="screen__bg" src="images/01_gate/bg-language-900.jpg" alt="" />
+      <div class="screen__scrim"></div>
+      <div class="lang-select__header">
+        <img class="lang-select__logo" src="images/01_gate/logo-goongnori.png" alt="GOONGNORI" />
+        <div class="lang-select__subtitle" id="lang-select-subtitle"></div>
+      </div>
+      <div class="lang-select__buttons" id="lang-select-buttons"></div>
+    </section>
+
+    <!-- ============================================================
+         Gate Screen — PIN
+         ============================================================ -->
+    <section id="screen-gate-pin" class="screen gate-pin" data-screen="gate-pin">
+      <div class="pattern-bg"></div>
+      <div class="gate-pin__content">
+        <div class="gate-pin__top">
+          <img class="gate-pin__silhouette" src="images/01_gate/goongi-silhouette.png" alt="" />
+          <p class="gate-pin__title" id="gate-pin-title"></p>
+          <div class="gate-pin__dialogue" id="gate-pin-dialogue"></div>
+        </div>
+
+        <div class="gate-pin__pin-area">
+          <div class="pin-slots" id="pin-slots" role="status" aria-label="PIN 입력 현황">
+            <div class="pin-slot" data-slot="0"></div>
+            <div class="pin-slot" data-slot="1"></div>
+            <div class="pin-slot" data-slot="2"></div>
+            <div class="pin-slot" data-slot="3"></div>
+          </div>
+          <p class="pin-error-msg" id="pin-error-msg" role="alert"></p>
+        </div>
+
+        <div class="keypad" id="keypad" role="group" aria-label="숫자 키패드">
+          <div class="keypad__row">
+            <button class="key" type="button" data-key="1">1</button>
+            <button class="key" type="button" data-key="2">2</button>
+            <button class="key" type="button" data-key="3">3</button>
+          </div>
+          <div class="keypad__row">
+            <button class="key" type="button" data-key="4">4</button>
+            <button class="key" type="button" data-key="5">5</button>
+            <button class="key" type="button" data-key="6">6</button>
+          </div>
+          <div class="keypad__row">
+            <button class="key" type="button" data-key="7">7</button>
+            <button class="key" type="button" data-key="8">8</button>
+            <button class="key" type="button" data-key="9">9</button>
+          </div>
+          <div class="keypad__row">
+            <div class="key key--blank" aria-hidden="true"></div>
+            <button class="key" type="button" data-key="0">0</button>
+            <button class="key key--backspace" type="button" data-key="del" aria-label="삭제">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                <line x1="18" y1="9" x2="12" y2="15"/>
+                <line x1="12" y1="9" x2="18" y2="15"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Gate 등장
+         ============================================================ -->
+    <section id="screen-gate-appear" class="screen gate-appear" data-screen="gate-appear">
+      <img class="screen__bg" src="images/01_gate/bg-gate-appear-900.jpg" alt="" />
+      <div class="screen__scrim"></div>
+      <div class="gate-appear__bottom">
+        <img class="gate-appear__character" src="images/01_gate/goongi-front-full.png" alt="궁이" />
+        <div class="gate-appear__dialogue" id="gate-appear-dialogue"></div>
+        <button class="btn-primary" id="gate-appear-cta" type="button"></button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Chapter Screen
+         ============================================================ -->
+    <section id="screen-chapter" class="screen chapter" data-screen="chapter">
+      <div class="chapter__header">
+        <button class="chapter__back" type="button" id="chapter-back" aria-label="뒤로">‹</button>
+        <p class="chapter__header-title" id="chapter-header-title"></p>
+        <div class="stamp-mini" id="chapter-stamp-mini"></div>
+      </div>
+      <div class="chapter__hero">
+        <img id="chapter-hero1" src="" alt="" />
+      </div>
+      <div class="chapter__body" id="chapter-body">
+        <div class="dialogue-card">
+          <span class="avatar-crop dialogue-card__avatar"><img src="images/avatar-default.png" alt="궁이" /></span>
+          <p class="dialogue-card__text" id="chapter-dialogue"></p>
+        </div>
+        <p class="chapter__title" id="chapter-title"></p>
+        <div id="chapter-paragraphs"></div>
+        <button class="btn-primary" id="chapter-cta" type="button"></button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         이동 중 (지도)
+         ============================================================ -->
+    <section id="screen-enroute" class="screen enroute" data-screen="enroute">
+      <div class="pattern-bg"></div>
+      <div class="enroute__header">
+        <p class="enroute__title" id="enroute-title"></p>
+        <p class="enroute__subtitle" id="enroute-subtitle"></p>
+      </div>
+      <div class="enroute__map" id="enroute-map">
+        <div class="enroute__map-inner" id="enroute-map-inner">
+          <img class="enroute__map-image" id="enroute-map-image" src="" alt="" />
+          <div class="enroute__pins" id="enroute-pins"></div>
+        </div>
+      </div>
+      <div class="enroute__legend" id="enroute-legend"></div>
+      <button class="btn-primary" id="enroute-cta" type="button"></button>
+    </section>
+
+    <!-- ============================================================
+         Closing
+         ============================================================ -->
+    <section id="screen-closing" class="screen closing" data-screen="closing">
+      <div class="pattern-bg"></div>
+      <span class="avatar-crop closing__avatar"><img src="images/avatar-default.png" alt="궁이" /></span>
+      <p class="closing__headline" id="closing-headline"></p>
+      <div class="closing__stamps" id="closing-stamps"></div>
+      <p class="closing__summary" id="closing-summary"></p>
+      <div class="closing__farewell">
+        <p class="closing__farewell-name" id="closing-farewell-name"></p>
+        <p class="closing__farewell-text" id="closing-farewell-text"></p>
+      </div>
+      <a class="btn-secondary" id="closing-instagram" href="https://www.instagram.com/goongnori/" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+        <span id="closing-instagram-label"></span>
+      </a>
+      <button class="btn-primary" id="closing-cta" type="button"></button>
+    </section>
+
+  </div>
+
+  <!-- ============================================================
+       Lightbox — 챕터 이미지 클릭 시 확대
+       ============================================================ -->
+  <div class="lightbox" id="lightbox">
+    <img class="lightbox__img" id="lightbox-img" src="" alt="" />
+  </div>
+</div>
+
+<script src="js/content.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

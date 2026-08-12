@@ -1,0 +1,12 @@
+{
+  "name": "궁노리",
+  "short_name": "궁노리",
+  "description": "경복궁 전통 문화 디지털 체험",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf6ee",
+  "theme_color": "#fbf6ee",
+  "lang": "ko",
+  "icons": []
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fbf6ee" />
+  <title>404 — 궁노리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+KR:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <div class="mobile-wrap">
+    <main class="pw-page" role="main">
+
+      <div class="nf-content">
+        <img src="images/00_logo/logo.png" class="nf-logo" alt="궁노리" />
+        <div class="pw-divider"></div>
+
+        <p class="nf-code">404</p>
+
+        <div class="nf-text">
+          <p class="nf-sub">
+            <span>요청하신 페이지를 찾을 수 없습니다</span>
+            <span>The page you requested could not be found.</span>
+            <span>お探しのページが見つかりませんでした</span>
+            <span>找不到您所请求的页面</span>
+          </p>
+        </div>
+
+        <a href="/" class="nf-btn">
+          <span class="nf-btn-ko">처음으로 돌아가기</span>
+          <span class="nf-btn-other">Back to Home · ホームに戻る · 返回首页</span>
+        </a>
+
+        <p class="nf-timer" id="nf-timer">
+          <span id="t-ko">8초 후 자동으로 이동합니다</span>
+          <span id="t-en">Redirecting in 8 seconds</span>
+          <span id="t-ja">8秒後に自動的に移動します</span>
+          <span id="t-zh">8秒后自动跳转</span>
+        </p>
+      </div>
+
+      <div class="pw-footer">
+        <span class="pw-footer-en">GOONGNORI</span>
+        <span class="pw-footer-ko">景福宮</span>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    let s = 8;
+    const tko = document.getElementById('t-ko');
+    const ten = document.getElementById('t-en');
+    const tja = document.getElementById('t-ja');
+    const tzh = document.getElementById('t-zh');
+    const tick = setInterval(() => {
+      s--;
+      if (s <= 0) { clearInterval(tick); window.location.replace('/'); return; }
+      tko.textContent = s + '초 후 자동으로 이동합니다';
+      ten.textContent = 'Redirecting in ' + s + ' seconds';
+      tja.textContent = s + '秒後に自動的に移動します';
+      tzh.textContent = s + '秒后自动跳转';
+    }, 1000);
+  </script>
+</body>
+
+</html>
