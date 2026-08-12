@@ -5,17 +5,21 @@
 'use strict';
 
 // ── 상태 ────────────────────────────────────────────────────
+// 언어/인증/진행상황은 sessionStorage — 탭을 완전히 껐다 켜면 자동으로 사라져 처음부터 시작됨.
+// PIN 시도횟수·잠금은 보안 목적이라 그대로 localStorage(탭을 닫아도 잠금이 풀리면 안 됨).
 const LANG_KEY      = 'goongnori_lang';
 const AUTH_KEY       = 'goongnori_auth';
 const ATTEMPTS_KEY    = 'goongnori_pin_attempts';
 const LOCK_KEY         = 'goongnori_pin_lock_until';
 const STEP_KEY          = 'goongnori_step';
+const LAST_HIDDEN_KEY   = 'goongnori_last_hidden';
+const IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 다른 화면/앱으로 전환한 채 이 시간 이상 지나면 처음부터
 
 // 여정 순서: chapter0 → map0 → chapter1 → map1 → ... → chapter6 → closing
 const TOTAL_STEPS = CHAPTERS.length * 2; // 마지막 인덱스(TOTAL_STEPS-1)는 closing
 let progressStep = 0;
 
-let currentLang = localStorage.getItem(LANG_KEY) || null;
+let currentLang = sessionStorage.getItem(LANG_KEY) || null;
 let currentPin  = '';
 
 // Safari는 주소창/하단 툴바가 접혔다 펼쳐지며 실제 보이는 뷰포트 높이가 계속 바뀌는데,
@@ -152,7 +156,7 @@ function renderLanguageSelect() {
 
 function selectLanguage(code) {
   currentLang = code;
-  localStorage.setItem(LANG_KEY, code);
+  sessionStorage.setItem(LANG_KEY, code);
   document.documentElement.lang = code;
   goToGatePin();
 }
@@ -240,7 +244,7 @@ async function verifyPin() {
     const audio = new Audio('sound/login.mp3');
     audio.play().catch(() => {});
 
-    localStorage.setItem(AUTH_KEY, 'ok');
+    sessionStorage.setItem(AUTH_KEY, 'ok');
 
     setTimeout(() => goToGateAppear(), 900);
   } else {
@@ -316,7 +320,7 @@ function stepInfo(step) {
 
 function goToStep(step) {
   progressStep = Math.max(0, Math.min(step, TOTAL_STEPS - 1));
-  localStorage.setItem(STEP_KEY, String(progressStep));
+  sessionStorage.setItem(STEP_KEY, String(progressStep));
   const info = stepInfo(progressStep);
   if (info.type === 'chapter') renderChapter(info.idx);
   else if (info.type === 'map') renderEnroute(info.idx);
@@ -324,7 +328,7 @@ function goToStep(step) {
 }
 
 function beginOrResume() {
-  const saved = Number(localStorage.getItem(STEP_KEY));
+  const saved = Number(sessionStorage.getItem(STEP_KEY));
   const step = Number.isFinite(saved) && saved >= 0 && saved < TOTAL_STEPS ? saved : 0;
   goToStep(step);
 }
@@ -516,14 +520,35 @@ function renderClosing() {
 }
 
 function restartJourney() {
-  localStorage.removeItem(AUTH_KEY);
-  localStorage.removeItem(LANG_KEY);
-  localStorage.removeItem(STEP_KEY);
+  sessionStorage.removeItem(AUTH_KEY);
+  sessionStorage.removeItem(LANG_KEY);
+  sessionStorage.removeItem(STEP_KEY);
   currentLang = null;
   currentPin = '';
   progressStep = 0;
   showScreen('language-select');
 }
+
+// ============================================================
+//  자리 비움 타임아웃 — 다른 화면/앱으로 전환한 채(탭은 안 닫고) 30분 이상 지나면
+//  돌아왔을 때 처음부터 다시 시작. 탭을 완전히 닫았다 열면 sessionStorage 자체가
+//  사라지므로 별도 처리 없이 이미 처음으로 돌아감 — 이건 "닫진 않았지만 오래 떠나있던" 경우만 담당.
+// ============================================================
+function checkIdleTimeout() {
+  const hiddenAt = Number(sessionStorage.getItem(LAST_HIDDEN_KEY) || 0);
+  sessionStorage.removeItem(LAST_HIDDEN_KEY);
+  if (hiddenAt > 0 && Date.now() - hiddenAt > IDLE_TIMEOUT_MS && sessionStorage.getItem(AUTH_KEY) === 'ok') {
+    restartJourney();
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    sessionStorage.setItem(LAST_HIDDEN_KEY, String(Date.now()));
+  } else if (document.visibilityState === 'visible') {
+    checkIdleTimeout();
+  }
+});
 
 // ============================================================
 //  Lightbox — 챕터 이미지(히어로 + 본문 삽입 이미지) 클릭 시 확대
@@ -556,6 +581,8 @@ function setupLightbox() {
 window.addEventListener('resize', layoutMapPins);
 
 document.addEventListener('DOMContentLoaded', () => {
+  checkIdleTimeout(); // currentLang/progressStep 초기화보다 먼저 — 자리비움 만료 시 라우팅에 반영되도록
+
   // 로컬 개발 중(localhost)에는 개발자도구 차단을 걸지 않음 — 실제 배포 도메인에서만 동작
   const isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
   if (!isLocalDev) setupContentProtection();
@@ -579,7 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!currentLang) {
     showScreen('language-select');
-  } else if (localStorage.getItem(AUTH_KEY) !== 'ok') {
+  } else if (sessionStorage.getItem(AUTH_KEY) !== 'ok') {
     document.documentElement.lang = currentLang;
     goToGatePin();
   } else {
