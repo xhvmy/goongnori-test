@@ -446,10 +446,10 @@ button {
   align-items: center;
   justify-content: center;
   gap: clamp(24px, 6.9dvh, 66px);
-  /* 이 화면은 콘텐츠가 정확히 한 뷰포트에 맞게 튜닝되어 있어 스크롤할 거리가 전혀 없음 —
-     Safari는 문서가 실제로 스크롤돼야만 주소창/하단 툴바를 접어주므로, 눈에 띄지 않을
-     정도의 여유(약간의 배경만 더 있는 셈)를 최소 높이에 더해 항상 스크롤 가능하게 함 */
-  min-height: calc(var(--vh100, 100dvh) + 80px);
+  /* Safari 크롬 접힘 효과보다 "스크롤 없이 항상 꽉 채움"이 우선 — .enroute와 동일하게
+     콘텐츠가 정확히 한 뷰포트에 맞도록 튜닝되어 있으므로 고정 height + overflow:hidden 유지 */
+  height: 100dvh;
+  overflow: hidden;
   padding: calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-top, 0px)) clamp(20px, 8.53vw, 38px) calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-bottom, 0px));
 }
 
@@ -514,8 +514,9 @@ button {
    ============================================================ */
 .gate-pin {
   align-items: center;
-  /* lang-select와 동일한 이유 — 스크롤할 거리를 살짝 보장해 Safari가 크롬을 접도록 함 */
-  min-height: calc(var(--vh100, 100dvh) + 80px);
+  /* lang-select와 동일 — 스크롤 없이 항상 꽉 채움이 우선 */
+  height: 100dvh;
+  overflow: hidden;
 }
 
 /* Language Select/Chapter 화면과 동일한 패턴: justify-content:center로 3개 그룹을
@@ -654,8 +655,9 @@ button {
 .gate-appear {
   align-items: center;
   justify-content: flex-end;
-  /* lang-select와 동일한 이유 — 스크롤할 거리를 살짝 보장해 Safari가 크롬을 접도록 함 */
-  min-height: calc(var(--vh100, 100dvh) + 80px);
+  /* lang-select와 동일 — 스크롤 없이 항상 꽉 채움이 우선 */
+  height: 100dvh;
+  overflow: hidden;
   padding: calc(clamp(56px, 15dvh, 160px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 10dvh, 103px) + env(safe-area-inset-bottom, 0px));
 }
 
@@ -851,7 +853,10 @@ button {
    애초에 스크롤 없이 한 화면에 딱 맞도록 설계했으므로 여기서만 고정 height + overflow:hidden 유지 */
 .enroute {
   align-items: center;
-  height: var(--vh100, 100dvh);
+  /* JS로 계산한 --vh100은 Safari의 크롬 접힘/펼침과 타이밍이 어긋나 화면이 실제 보이는
+     영역보다 작게(또는 크게) 잡힐 수 있음 — 브라우저가 실시간으로 추적하는 네이티브
+     100dvh를 직접 써서 항상 실제 보이는 높이와 정확히 맞도록 함 */
+  height: 100dvh;
   overflow: hidden;
   padding: 0 0 calc(clamp(20px, 4.5dvh, 40px) + env(safe-area-inset-bottom, 0px));
 }
