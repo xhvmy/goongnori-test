@@ -234,6 +234,22 @@ async function verifyPin() {
   }
 }
 
+// 다음 화면으로 넘어가기 전에 필요한 이미지를 미리 받아둠 — 화면이 바뀌는 순간
+// src를 처음 설정하면 그때부터 네트워크 요청이 시작돼서 1초 가까이 빈 이미지로
+// 보이는 문제가 있었음. 사용자가 이전 화면(지도 등)을 보는 동안 백그라운드로 미리 로드.
+function prefetchImage(src) {
+  if (!src) return;
+  const img = new Image();
+  img.src = src;
+}
+
+function prefetchChapterImages(idx) {
+  const chapter = CHAPTERS[idx];
+  if (!chapter) return;
+  prefetchImage(chapter.hero1);
+  chapter.extraImages.forEach(entry => prefetchImage(entry.src));
+}
+
 // ============================================================
 //  Gate 등장
 // ============================================================
@@ -244,6 +260,11 @@ function goToGateAppear() {
   cta.textContent = text.cta;
   applyDisplayFont(cta, currentLang, true);
   showScreen('gate-appear');
+
+  // 첫 챕터(경복궁) 이미지 + 지도 배경(모든 지도가 공유)을 미리 받아둬서
+  // 첫 챕터/첫 지도 화면 진입 시 바로 보이게 함
+  prefetchChapterImages(0);
+  prefetchImage(MAPS[0] && MAPS[0].image);
 }
 
 // ============================================================
@@ -306,6 +327,7 @@ function renderChapter(idx) {
       const img = document.createElement('img');
       img.src = imgData.src;
       img.alt = place;
+      img.loading = 'lazy'; // 히어로 아래 본문 삽입 이미지는 스크롤해서 볼 때까지 미룸
       wrap.appendChild(img);
       paraWrap.appendChild(wrap);
     });
@@ -316,6 +338,10 @@ function renderChapter(idx) {
   applyDisplayFont(cta, currentLang, true);
 
   showScreen('chapter');
+
+  // 다음 챕터 이미지를 미리 받아둠 (이 챕터를 읽는 동안 + 다음 지도 화면을 보는 동안이
+  // 로딩 시간을 벌 수 있는 창)
+  prefetchChapterImages(idx + 1);
 }
 
 // ============================================================
@@ -415,6 +441,10 @@ function renderEnroute(mapIdx) {
   // display:none→flex 직후엔 레이아웃이 아직 안정되지 않아 크기를 잘못 읽을 수 있음 —
   // 다음 프레임에서 다시 계산
   requestAnimationFrame(layoutMapPins);
+
+  // 다음 챕터 이미지를 다시 한 번 미리 받아둠(이미 진행 중이면 브라우저가 중복 요청 안 함) —
+  // 이 지도 화면을 보는 동안이 곧 다음 챕터 이미지가 도착할 시간을 버는 창
+  prefetchChapterImages(map.toIdx);
 }
 
 // ============================================================

@@ -79,9 +79,9 @@ const PLACES = [
 const CHAPTERS = [
   {
     // 0. 경복궁
-    hero1: 'images/02_chapters/01_gyeongbokgung/hero1-900.jpg',
+    hero1: 'images/02_chapters/01_gyeongbokgung/hero1-900.webp',
     extraImages: [
-      { src: 'images/02_chapters/01_gyeongbokgung/hero2-900.jpg', after: 0 },
+      { src: 'images/02_chapters/01_gyeongbokgung/hero2-900.webp', after: 0 },
     ],
     text: {
       ko: {
@@ -128,11 +128,11 @@ const CHAPTERS = [
   },
   {
     // 1. 흥례문
-    hero1: 'images/02_chapters/02_heungnyemun/hero1-900.jpg',
+    hero1: 'images/02_chapters/02_heungnyemun/hero1-900.webp',
     extraImages: [
-      { src: 'images/02_chapters/02_heungnyemun/hero2-900.jpg', after: 0 },
-      { src: 'images/02_chapters/02_heungnyemun/hero3-900.jpg', after: 1 },
-      { src: 'images/02_chapters/02_heungnyemun/hero4-900.jpg', after: 2 },
+      { src: 'images/02_chapters/02_heungnyemun/hero2-900.webp', after: 0 },
+      { src: 'images/02_chapters/02_heungnyemun/hero3-900.webp', after: 1 },
+      { src: 'images/02_chapters/02_heungnyemun/hero4-900.webp', after: 2 },
     ],
     text: {
       ko: {
@@ -179,7 +179,7 @@ const CHAPTERS = [
   },
   {
     // 2. 영제교
-    hero1: 'images/02_chapters/03_yeongjegyo/hero1-900.jpg',
+    hero1: 'images/02_chapters/03_yeongjegyo/hero1-900.webp',
     extraImages: [],
     text: {
       ko: {
@@ -226,10 +226,10 @@ const CHAPTERS = [
   },
   {
     // 3. 근정전
-    hero1: 'images/02_chapters/04_geunjeongjeon/hero1-900.jpg',
+    hero1: 'images/02_chapters/04_geunjeongjeon/hero1-900.webp',
     extraImages: [
-      { src: 'images/02_chapters/04_geunjeongjeon/hero2-900.jpg', after: 0 },
-      { src: 'images/02_chapters/04_geunjeongjeon/hero3-900.jpg', after: 1 },
+      { src: 'images/02_chapters/04_geunjeongjeon/hero2-900.webp', after: 0 },
+      { src: 'images/02_chapters/04_geunjeongjeon/hero3-900.webp', after: 1 },
     ],
     text: {
       ko: {
@@ -276,7 +276,7 @@ const CHAPTERS = [
   },
   {
     // 4. 사정전
-    hero1: 'images/02_chapters/05_sajeongjeon/hero1-900.jpg',
+    hero1: 'images/02_chapters/05_sajeongjeon/hero1-900.webp',
     extraImages: [],
     text: {
       ko: {
@@ -323,7 +323,7 @@ const CHAPTERS = [
   },
   {
     // 5. 수정전
-    hero1: 'images/02_chapters/06_sujeongjeon/hero1-900.jpg',
+    hero1: 'images/02_chapters/06_sujeongjeon/hero1-900.webp',
     extraImages: [],
     text: {
       ko: {
@@ -370,9 +370,9 @@ const CHAPTERS = [
   },
   {
     // 6. 경회루
-    hero1: 'images/02_chapters/07_gyeonghoeru/hero1-900.jpg',
+    hero1: 'images/02_chapters/07_gyeonghoeru/hero1-900.webp',
     extraImages: [
-      { src: 'images/02_chapters/07_gyeonghoeru/hero2-900.jpg', after: 1 },
+      { src: 'images/02_chapters/07_gyeonghoeru/hero2-900.webp', after: 1 },
     ],
     text: {
       ko: {

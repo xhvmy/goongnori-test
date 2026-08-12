@@ -2,7 +2,7 @@
 //  sw.js — 궁노리 오프라인 캐시
 // ============================================================
 
-const CACHE_NAME = 'goongnori-v4';
+const CACHE_NAME = 'goongnori-v5';
 
 const APP_SHELL = [
   'index.html',
@@ -15,8 +15,8 @@ const APP_SHELL = [
   'fonts/KMU80SungkokSemiSerif.woff2',
   'fonts/KMU80SungkokSerif.woff2',
   'images/00_logo/logo.png',
-  'images/01_gate/bg-language-900.jpg',
-  'images/01_gate/bg-gate-appear-900.jpg',
+  'images/01_gate/bg-language-900.webp',
+  'images/01_gate/bg-gate-appear-900.webp',
   'images/01_gate/logo-goongnori.webp',
   'images/01_gate/goongi-silhouette.png',
   'images/01_gate/goongi-front-full.webp',
