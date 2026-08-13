@@ -644,7 +644,7 @@ button {
    ============================================================ */
 .gate-appear {
   align-items: center;
-  padding: calc(clamp(56px, 15dvh, 160px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 10dvh, 103px) + env(safe-area-inset-bottom, 0px));
+  padding: calc(clamp(56px, 19.73dvh, 190px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 12.7dvh, 125px) + env(safe-area-inset-bottom, 0px));
 }
 
 .gate-appear__bottom {
@@ -659,7 +659,7 @@ button {
 
 .gate-appear__character {
   width: auto;
-  height: clamp(160px, 32dvh, 300px);
+  height: clamp(160px, 36.99dvh, 350px);
   aspect-ratio: 2 / 3;
   object-fit: contain;
 }
