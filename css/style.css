@@ -644,7 +644,6 @@ button {
    ============================================================ */
 .gate-appear {
   align-items: center;
-  justify-content: flex-end;
   padding: calc(clamp(56px, 15dvh, 160px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 10dvh, 103px) + env(safe-area-inset-bottom, 0px));
 }
 
@@ -656,6 +655,10 @@ button {
   align-items: center;
   gap: clamp(14px, 3dvh, 28px);
   width: 100%;
+  /* 이 블록 전체를 화면 하단에 붙이는 대신(justify-content:flex-end), 이 블록 자체가
+     패딩 안의 남는 세로 공간을 전부 차지하게 함 — 그래야 궁이는 위쪽 고정 위치에 그대로
+     있고, 대사창~버튼만 margin-top:auto로 아래쪽에 붙게 분리할 수 있음(아래 참고) */
+  flex: 1;
 }
 
 .gate-appear__character {
@@ -667,6 +670,12 @@ button {
 
 .gate-appear__dialogue {
   width: 100%;
+  /* 언어마다 대사 길이가 달라 대사창 높이가 들쭉날쭉한데, 궁이와 대사창이 같은 덩어리로
+     화면 하단에 고정되어 있으면 대사가 길수록(예: 영어) 궁이가 위로 밀려 올라감 — 대사창
+     높이를 억지로 고정하면 이번엔 긴 번역이 잘려버려서, 대신 이 요소를 margin-top:auto로
+     밀어 내려 궁이(항상 위쪽 고정 위치)와 대사창(항상 아래쪽에 붙음) 사이 간격만 언어별로
+     달라지게 함 — 어느 언어든 궁이 위치는 그대로, 텍스트도 절대 안 잘림 */
+  margin-top: auto;
   padding: clamp(14px, 5.33vw, 24px);
   background: var(--color-bg-surface-raised);
   border-radius: 20px;
