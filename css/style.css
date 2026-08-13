@@ -644,7 +644,12 @@ button {
    ============================================================ */
 .gate-appear {
   align-items: center;
-  padding: calc(clamp(56px, 19.73dvh, 190px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 12.7dvh, 125px) + env(safe-area-inset-bottom, 0px));
+  /* top offset은 Figma 수치가 아니라 배경 사진 자체를 기준으로 잡음 — object-fit:cover가
+     이 배경(900x498, 옆으로 넓음)을 세로 방향은 크롭 없이 꽉 채우기 때문에, 사진 속 세로
+     위치 %가 화면 세로 위치 %와 그대로 일치함. 사진의 근정전 계단이 끝나고 평평한 마당
+     박석이 시작되는 지점이 원본 기준 약 67% 지점이라 궁이 발밑을 그 값에 맞춤 —
+     이전 값(19.73dvh)은 궁이가 계단 앞에 붕 뜬 것처럼 보였음. */
+  padding: calc(clamp(85px, 30dvh, 289px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(40px, 12.7dvh, 125px) + env(safe-area-inset-bottom, 0px));
 }
 
 .gate-appear__bottom {
