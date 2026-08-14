@@ -644,13 +644,14 @@ button {
    ============================================================ */
 .gate-appear {
   align-items: center;
-  /* top offset은 배경 사진 자체를 기준으로 잡음 — object-fit:cover가 이 배경(900x498,
-     옆으로 넓음)을 세로 방향은 크롭 없이 꽉 채우기 때문에, 사진 속 세로 위치 %가 화면
-     세로 위치 %와 그대로 일치함. 계단/돌기둥(답도 표석) 열이 사진 기준 45~60%까지
-     이어지므로 궁이 발밑을 69%(top 32dvh)에 둬 마당 박석 위에 서 있게 하되, 가장 긴
-     번역(EN)까지 스크롤 없이 다 들어가도록 아래 여백/줄간격을 같이 줄임(패딩바텀·gap·
-     대사 폰트/줄간격 — 전부 이 화면 전용 클래스라 다른 화면 CTA/카드에는 영향 없음). */
-  padding: calc(clamp(90px, 32dvh, 308px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(14px, 2dvh, 32px) + env(safe-area-inset-bottom, 0px));
+  /* top/character 수치는 실제 Figma 프레임(49:25, 375x812)에서 그대로 가져온 값 —
+     pt-160/812=19.73%, 캐릭터 300/812=36.99%. 이전엔 이 수치가 안 맞아 보였는데, 원인은
+     좌표가 아니라 배경 이미지 자체가 Figma가 쓰는 원본 사진과 다르게(아래쪽 크롭+다른
+     비율로) 배포되어 있었던 것 — bg-gate-appear-900.webp를 Figma의 원본 크롭으로
+     교체하니 좌표를 그대로 써도 궁이가 정확히 같은 지점(계단 아래 마당)에 섬. 다만
+     하단 padding만은 Figma 원본(103px)보다 줄여서(gap도 살짝) 가장 긴 EN 번역까지
+     스크롤 없이 들어가게 함 — 둘 다 이 화면 전용 클래스라 다른 화면엔 영향 없음. */
+  padding: calc(clamp(56px, 19.73dvh, 190px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(12px, 1.6dvh, 24px) + env(safe-area-inset-bottom, 0px));
 }
 
 .gate-appear__bottom {
@@ -659,7 +660,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(8px, 1.2dvh, 14px);
+  gap: clamp(10px, 2dvh, 24px);
   width: 100%;
 }
 
@@ -672,13 +673,13 @@ button {
 
 .gate-appear__dialogue {
   width: 100%;
-  padding: clamp(12px, 4.5vw, 20px);
+  padding: clamp(14px, 5.33vw, 24px);
   background: var(--color-bg-surface-raised);
   border-radius: 20px;
   box-shadow: var(--shadow-card);
   font-family: var(--font-ko);
-  font-size: clamp(13px, 4vw, 18px);
-  line-height: 1.45;
+  font-size: clamp(14px, 4.27vw, 19px);
+  line-height: 1.55;
   color: var(--color-text-primary);
 }
 
