@@ -30,11 +30,13 @@
     <section id="screen-language-select" class="screen lang-select is-active" data-screen="language-select">
       <img class="screen__bg" src="images/01_gate/bg-language-900.webp" alt="" />
       <div class="screen__scrim"></div>
-      <div class="lang-select__header">
-        <img class="lang-select__logo" src="images/01_gate/logo-goongnori.webp" alt="GOONGNORI" />
-        <div class="lang-select__subtitle" id="lang-select-subtitle"></div>
+      <div class="lang-select__fill">
+        <div class="lang-select__header">
+          <img class="lang-select__logo" src="images/01_gate/logo-goongnori.webp" alt="GOONGNORI" />
+          <div class="lang-select__subtitle" id="lang-select-subtitle"></div>
+        </div>
+        <div class="lang-select__buttons" id="lang-select-buttons"></div>
       </div>
-      <div class="lang-select__buttons" id="lang-select-buttons"></div>
     </section>
 
     <!-- ============================================================
@@ -150,23 +152,25 @@
          ============================================================ -->
     <section id="screen-closing" class="screen closing" data-screen="closing">
       <div class="pattern-bg"></div>
-      <span class="avatar-crop closing__avatar"><img src="images/avatar-default.webp" alt="궁이" /></span>
-      <p class="closing__headline" id="closing-headline"></p>
-      <div class="closing__stamps" id="closing-stamps"></div>
-      <p class="closing__summary" id="closing-summary"></p>
-      <div class="closing__farewell">
-        <p class="closing__farewell-name" id="closing-farewell-name"></p>
-        <p class="closing__farewell-text" id="closing-farewell-text"></p>
+      <div class="closing__fill">
+        <span class="avatar-crop closing__avatar"><img src="images/avatar-default.webp" alt="궁이" /></span>
+        <p class="closing__headline" id="closing-headline"></p>
+        <div class="closing__stamps" id="closing-stamps"></div>
+        <p class="closing__summary" id="closing-summary"></p>
+        <div class="closing__farewell">
+          <p class="closing__farewell-name" id="closing-farewell-name"></p>
+          <p class="closing__farewell-text" id="closing-farewell-text"></p>
+        </div>
+        <a class="btn-secondary" id="closing-instagram" href="https://www.instagram.com/goongnori/" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          <span id="closing-instagram-label"></span>
+        </a>
+        <button class="btn-primary" id="closing-cta" type="button"></button>
       </div>
-      <a class="btn-secondary" id="closing-instagram" href="https://www.instagram.com/goongnori/" target="_blank" rel="noopener noreferrer">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-        <span id="closing-instagram-label"></span>
-      </a>
-      <button class="btn-primary" id="closing-cta" type="button"></button>
     </section>
 
   </div>

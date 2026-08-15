@@ -440,12 +440,24 @@ button {
    Language Select
    ============================================================ */
 .lang-select {
+  padding: calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-top, 0px)) clamp(20px, 8.53vw, 38px) calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-bottom, 0px));
+}
+
+/* .lang-select 자체(position:absolute;inset:0)에 justify-content:space-between을 바로
+   주면 사파리에서 남는 공간 분배가 안 먹는 케이스가 있어서, gate-appear__bottom과 같은
+   패턴으로 flex:1 내부 래퍼를 하나 더 둠 — 이 래퍼가 화면 높이를 실제로 채우고, 그 안에서
+   space-between이 header↔buttons 사이 간격을 늘려 화면을 꽉 채움 */
+.lang-select__fill {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  /* space-between: gap은 최소값으로만 쓰이고, 화면에 남는 공간은 전부 header↔buttons
-     사이 간격으로 흡수됨 — 짧은 화면에선 gap 그대로, 큰 화면에선 꽉 차게 벌어짐 */
   justify-content: space-between;
   gap: clamp(24px, 6.9dvh, 66px);
-  padding: calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-top, 0px)) clamp(20px, 8.53vw, 38px) calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-bottom, 0px));
 }
 
 .lang-select__header {
@@ -1005,19 +1017,30 @@ button {
    Closing Screen
    ============================================================ */
 .closing {
-  align-items: center;
-  /* farewell 문구가 가장 긴 EN 기준으로 계산하면 원래 여백(gap 28px x6, 상단 72px)으로는
-     iPhone SE 크기에서 스크롤 없이 안 들어감(약 125px 초과) — gap/패딩을 최소값으로 줄이고
-     아래 텍스트 크기도 vw 기반으로 살짝 좁은 화면에서 줄어들게 함. 대신 justify-content를
-     space-between으로 바꿔서, 남는 공간이 있는 화면에서는 그 최소 gap 위로 여백이 더
-     벌어져 화면을 꽉 채움 — SE처럼 여유가 없을 땐 gap이 최소값 그대로 유지되어 안전함 */
-  justify-content: space-between;
-  gap: clamp(8px, 1.5dvh, 16px);
   padding: calc(env(safe-area-inset-top, 0px) + clamp(20px, 6dvh, 48px)) 28px calc(clamp(16px, 5dvh, 36px) + env(safe-area-inset-bottom, 0px));
   text-align: center;
 }
 
-.closing > * { position: relative; z-index: 2; flex-shrink: 0; }
+/* .closing 자체(position:absolute;inset:0)에 justify-content:space-between을 바로 주면
+   사파리에서 남는 공간 분배가 안 먹는 케이스가 있어서, gate-appear__bottom과 같은 패턴으로
+   flex:1 내부 래퍼를 둠 — 이 래퍼가 화면 높이를 실제로 채우고, 그 안에서 space-between이
+   요소 사이 간격을 늘려 화면을 꽉 채움. gap은 여전히 최소값 — farewell 문구가 가장 긴 EN
+   기준으로 계산하면 원래 여백(gap 28px x6, 상단 72px)으로는 iPhone SE 크기에서 스크롤
+   없이 안 들어가서(약 125px 초과) 줄여둔 값, 아래 텍스트 크기도 vw 기반으로 축소됨 */
+.closing__fill {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(8px, 1.5dvh, 16px);
+}
+
+.closing__fill > * { flex-shrink: 0; }
 
 .closing__avatar {
   width: 88px;
@@ -1104,7 +1127,7 @@ button {
   .gate-appear__bottom { gap: clamp(14px, 3vw, 36px); }
   .gate-pin__content { gap: clamp(12px, 3vw, 32px); }
   .gate-pin__top { gap: clamp(8px, 2vw, 22px); }
-  .closing { gap: clamp(16px, 3vw, 36px); }
+  .closing__fill { gap: clamp(16px, 3vw, 36px); }
 }
 
 /* ============================================================
