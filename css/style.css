@@ -92,7 +92,7 @@ body {
   font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
   font-weight: 400;
   line-height: 1.8;
-  min-height: 100dvh;
+  min-height: 100svh;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
   overflow-x: hidden;
@@ -123,7 +123,7 @@ button {
 
 .mobile-wrap {
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100svh;
   position: relative;
   overflow-x: clip;
 }
@@ -141,7 +141,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100dvh;
+  height: 100svh;
   padding: 20px 24px env(safe-area-inset-bottom, 20px);
   position: relative;
   overflow: hidden;
@@ -329,7 +329,7 @@ button {
    ============================================================ */
 #app-shell {
   position: relative;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden;
 }
 
@@ -450,7 +450,7 @@ button {
 .lang-select__fill {
   position: relative;
   z-index: 2;
-  height: calc(100dvh - clamp(20px, 8.53vw, 38px) * 2 - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  height: calc(100svh - clamp(20px, 8.53vw, 38px) * 2 - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -531,8 +531,8 @@ button {
   z-index: 2;
   /* 사파리(WebKit)에서는 position:absolute;inset:0로 크기가 잡힌 조상(.gate-pin) 안에서
      flex:1 자식이 실제로 안 늘어나는 케이스가 확인됨 — .gate-pin에 padding이 없으므로
-     그냥 100dvh를 직접 줌(border-box라 이 요소 자신의 padding은 알아서 안쪽으로 빠짐) */
-  height: 100dvh;
+     그냥 100svh를 직접 줌(border-box라 이 요소 자신의 padding은 알아서 안쪽으로 빠짐) */
+  height: 100svh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -673,7 +673,7 @@ button {
 .gate-appear__bottom {
   position: relative;
   z-index: 2;
-  height: calc(100dvh - clamp(56px, 19.73dvh, 190px) - clamp(12px, 1.6dvh, 24px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  height: calc(100svh - clamp(56px, 19.73dvh, 190px) - clamp(12px, 1.6dvh, 24px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -859,7 +859,7 @@ button {
    이동 중 (지도)
    ============================================================ */
 /* 헤더/범례/CTA는 고정 크기, .enroute__map만 flex:1로 남는 공간을 그대로 채움 — 그래서
-   이 화면은 항상 정확히 .screen 높이(100dvh)만큼만 차지하고 스크롤이 생길 수가 없음
+   이 화면은 항상 정확히 .screen 높이(100svh)만큼만 차지하고 스크롤이 생길 수가 없음
    (다른 화면들처럼 콘텐츠 길이에 맞춰 패딩/간격을 일일이 맞출 필요가 없는 유일한 화면) */
 .enroute {
   align-items: center;
@@ -1030,7 +1030,7 @@ button {
 .closing__fill {
   position: relative;
   z-index: 2;
-  height: calc(100dvh - clamp(20px, 6dvh, 48px) - clamp(16px, 5dvh, 36px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  height: calc(100svh - clamp(20px, 6dvh, 48px) - clamp(16px, 5dvh, 36px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   width: 100%;
   display: flex;
   flex-direction: column;
