@@ -92,7 +92,7 @@ body {
   font-family: var(--font-ko), var(--font-ja), var(--font-zh), serif;
   font-weight: 400;
   line-height: 1.8;
-  min-height: 100svh;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
   overflow-x: hidden;
@@ -123,7 +123,7 @@ button {
 
 .mobile-wrap {
   width: 100%;
-  min-height: 100svh;
+  min-height: 100dvh;
   position: relative;
   overflow-x: clip;
 }
@@ -141,7 +141,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100svh;
+  height: 100dvh;
   padding: 20px 24px env(safe-area-inset-bottom, 20px);
   position: relative;
   overflow: hidden;
@@ -329,7 +329,7 @@ button {
    ============================================================ */
 #app-shell {
   position: relative;
-  height: 100svh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -440,23 +440,10 @@ button {
    Language Select
    ============================================================ */
 .lang-select {
-  padding: calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-top, 0px)) clamp(20px, 8.53vw, 38px) calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-bottom, 0px));
-}
-
-/* 사파리(WebKit)에서는 position:absolute;inset:0로 크기가 잡힌 조상 안에서 flex:1 자식이
-   실제로 안 늘어나는 케이스가 확인됨(내부 래퍼가 그냥 콘텐츠 높이만큼만 차지하고 위로
-   쏠려버림) — flex:1 대신 부모(.lang-select) padding을 그대로 빼는 명시적 height로 계산해서
-   dvh에 직접 의존하게 함. 이러면 flex 공간 계산 자체가 필요 없어져서 안전함 */
-.lang-select__fill {
-  position: relative;
-  z-index: 2;
-  height: calc(100svh - clamp(20px, 8.53vw, 38px) * 2 - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
-  width: 100%;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: clamp(24px, 6.9dvh, 66px);
+  padding: calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-top, 0px)) clamp(20px, 8.53vw, 38px) calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-bottom, 0px));
 }
 
 .lang-select__header {
@@ -522,24 +509,22 @@ button {
   align-items: center;
 }
 
-/* 3개 그룹(top/pin-area/keypad) 사이 gap은 "iPhone SE(667px 높이)에서 정확히 안전한
-   최소값" ↔ "iPhone 16 Pro Max(932px)에서 넉넉한 최대값" 두 지점을 지나는 1차 함수
-   (calc(A + B*1dvh))로 계산 — 순수 % 기반 dvh와 달리 원점을 지나지 않아도 되므로 짧은
-   화면에서는 최소값 그대로, 큰 화면에서는 이 값 위로 space-between이 더 벌려서 꽉 채움 */
+/* Language Select/Chapter 화면과 동일한 패턴: justify-content:center로 3개 그룹을
+   "하나의 뭉치"로 가운데 정렬. space-between처럼 남는 공간을 그룹 사이 개별 gap에
+   몰아넣지 않으므로, 큰 화면에서도 구성이 흐트러지지 않고 위아래 여백만 늘어남.
+   간격 자체도 완전히 고정하면 큰 화면에서 답답해 보이므로, "iPhone SE(667px 높이)에서
+   정확히 안전한 최소값" ↔ "iPhone 16 Pro Max(932px)에서 넉넉한 최대값" 두 지점을 지나는
+   1차 함수(calc(A + B*1dvh))로 계산 — 순수 % 기반 dvh와 달리 원점을 지나지 않아도 되므로
+   짧은 화면에서는 그대로, 큰 화면에서는 확실히 더 벌어짐 */
 .gate-pin__content {
   position: relative;
   z-index: 2;
-  /* 사파리(WebKit)에서는 position:absolute;inset:0로 크기가 잡힌 조상(.gate-pin) 안에서
-     flex:1 자식이 실제로 안 늘어나는 케이스가 확인됨 — .gate-pin에 padding이 없으므로
-     그냥 100svh를 직접 줌(border-box라 이 요소 자신의 padding은 알아서 안쪽으로 빠짐) */
-  height: 100svh;
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* space-between: 기존 gap 공식은 그대로 "최소값"으로 남고, 남는 공간은 3개 그룹
-     사이 간격으로 흡수됨 — 화면이 커질수록 gap 공식의 max(24px)보다 더 벌어져 꽉 참 */
-  justify-content: space-between;
+  justify-content: center;
   gap: clamp(12px, calc(-18.21px + 4.528dvh), 24px);
   padding: calc(clamp(18px, calc(-17.24px + 5.283dvh), 32px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(12px, calc(-8.14px + 3.019dvh), 20px) + env(safe-area-inset-bottom, 0px));
 }
@@ -659,25 +644,22 @@ button {
    ============================================================ */
 .gate-appear {
   align-items: center;
-  /* top 수치는 실제 Figma 프레임(49:25, 375x812)에서 그대로 가져온 값(pt-160/812=19.73%) —
-     이전엔 이 수치가 안 맞아 보였는데, 원인은 좌표가 아니라 배경 이미지 자체가 Figma
-     원본과 다르게 크롭되어 배포되어 있었던 것(bg-gate-appear-900.webp 교체로 해결).
-     궁이 위치(top)는 이 padding-top이 그대로 결정하므로 아래 .gate-appear__bottom의
-     height 계산 방식과 무관하게 안 흔들림. */
+  /* top/character 수치는 실제 Figma 프레임(49:25, 375x812)에서 그대로 가져온 값 —
+     pt-160/812=19.73%, 캐릭터 300/812=36.99%. 이전엔 이 수치가 안 맞아 보였는데, 원인은
+     좌표가 아니라 배경 이미지 자체가 Figma가 쓰는 원본 사진과 다르게(아래쪽 크롭+다른
+     비율로) 배포되어 있었던 것 — bg-gate-appear-900.webp를 Figma의 원본 크롭으로
+     교체하니 좌표를 그대로 써도 궁이가 정확히 같은 지점(계단 아래 마당)에 섬. 다만
+     하단 padding만은 Figma 원본(103px)보다 줄여서(gap도 살짝) 가장 긴 EN 번역까지
+     스크롤 없이 들어가게 함 — 둘 다 이 화면 전용 클래스라 다른 화면엔 영향 없음. */
   padding: calc(clamp(56px, 19.73dvh, 190px) + env(safe-area-inset-top, 0px)) clamp(20px, 7.47vw, 33px) calc(clamp(12px, 1.6dvh, 24px) + env(safe-area-inset-bottom, 0px));
 }
 
-/* 사파리(WebKit)에서는 position:absolute;inset:0로 크기가 잡힌 조상 안에서 flex:1 자식이
-   실제로 안 늘어나는 케이스가 확인됨 — flex:1 대신 부모(.gate-appear) padding을 그대로 빼는
-   명시적 height로 계산해서 dvh에 직접 의존하게 함. */
 .gate-appear__bottom {
   position: relative;
   z-index: 2;
-  height: calc(100svh - clamp(56px, 19.73dvh, 190px) - clamp(12px, 1.6dvh, 24px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   gap: clamp(10px, 2dvh, 24px);
   width: 100%;
 }
@@ -859,7 +841,7 @@ button {
    이동 중 (지도)
    ============================================================ */
 /* 헤더/범례/CTA는 고정 크기, .enroute__map만 flex:1로 남는 공간을 그대로 채움 — 그래서
-   이 화면은 항상 정확히 .screen 높이(100svh)만큼만 차지하고 스크롤이 생길 수가 없음
+   이 화면은 항상 정확히 .screen 높이(100dvh)만큼만 차지하고 스크롤이 생길 수가 없음
    (다른 화면들처럼 콘텐츠 길이에 맞춰 패딩/간격을 일일이 맞출 필요가 없는 유일한 화면) */
 .enroute {
   align-items: center;
@@ -1018,28 +1000,17 @@ button {
    Closing Screen
    ============================================================ */
 .closing {
+  align-items: center;
+  justify-content: center;
+  /* farewell 문구가 가장 긴 EN 기준으로 계산하면 원래 여백(gap 28px x6, 상단 72px)으로는
+     iPhone SE 크기에서 스크롤 없이 안 들어감(약 125px 초과) — gap/패딩을 줄이고 아래 텍스트
+     크기도 vw 기반으로 살짝 좁은 화면에서 줄어들게 해서 여유 30px 정도로 맞춤 */
+  gap: clamp(8px, 1.5dvh, 16px);
   padding: calc(env(safe-area-inset-top, 0px) + clamp(20px, 6dvh, 48px)) 28px calc(clamp(16px, 5dvh, 36px) + env(safe-area-inset-bottom, 0px));
   text-align: center;
 }
 
-/* 사파리(WebKit)에서는 position:absolute;inset:0로 크기가 잡힌 조상 안에서 flex:1 자식이
-   실제로 안 늘어나는 케이스가 확인됨 — flex:1 대신 부모(.closing) padding을 그대로 빼는
-   명시적 height로 계산해서 dvh에 직접 의존하게 함. gap은 여전히 최소값 — farewell 문구가
-   가장 긴 EN 기준으로 계산하면 원래 여백(gap 28px x6, 상단 72px)으로는 iPhone SE 크기에서
-   스크롤 없이 안 들어가서(약 125px 초과) 줄여둔 값, 아래 텍스트 크기도 vw 기반으로 축소됨 */
-.closing__fill {
-  position: relative;
-  z-index: 2;
-  height: calc(100svh - clamp(20px, 6dvh, 48px) - clamp(16px, 5dvh, 36px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(8px, 1.5dvh, 16px);
-}
-
-.closing__fill > * { flex-shrink: 0; }
+.closing > * { position: relative; z-index: 2; flex-shrink: 0; }
 
 .closing__avatar {
   width: 88px;
@@ -1126,7 +1097,7 @@ button {
   .gate-appear__bottom { gap: clamp(14px, 3vw, 36px); }
   .gate-pin__content { gap: clamp(12px, 3vw, 32px); }
   .gate-pin__top { gap: clamp(8px, 2vw, 22px); }
-  .closing__fill { gap: clamp(16px, 3vw, 36px); }
+  .closing { gap: clamp(16px, 3vw, 36px); }
 }
 
 /* ============================================================
