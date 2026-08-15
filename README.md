@@ -17,10 +17,12 @@ sw.js             오프라인 캐시(서비스 워커)
 manifest.json     홈 화면 추가(PWA) 설정
 images/00_logo/   파비콘 · PWA 아이콘
 images/01_gate/   언어선택 · PIN · 궁이등장 화면 에셋
+images/02_chapters/ 장소별(경복궁~경회루) 이야기 화면 이미지
+images/03_maps/   이동 중(지도) 화면 배경 6종
 sound/login.mp3   PIN 성공 시 재생되는 사운드
 ```
 
-현재는 이야기(Chapter) 화면이 "준비 중" 안내만 있는 상태이며, 다음 작업 범위는 `FIGMA-REDESIGN-SPEC.md`에 정리되어 있습니다.
+7개 장소(경복궁~경회루) 이야기(Chapter)·이동중(지도) 화면까지 4개 언어로 전부 채워진 상태입니다.
 
 ## 로컬에서 미리보기
 
