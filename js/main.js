@@ -86,9 +86,12 @@ function setupContentProtection() {
 // ============================================================
 //  화면 전환
 // ============================================================
-// 어두운 사진 배경 화면(언어선택/Gate 등장)에서는 Safari가 주소창·하단 툴바를 이 값으로
-// 칠하는데, theme-color가 계속 밝은 크림색 고정이면 어두운 사진 위/아래로 크림색 띠가
-// 떠보임 — 화면 전환마다 실제 배경에 맞게 갱신
+// 어두운 사진 배경 화면(언어선택/Gate 등장)에서는 상태바/주소창을 이 값으로 칠하고 싶은데,
+// 항상 밝은 크림색 고정이면 어두운 사진 위/아래로 크림색 띠가 떠보임 — 화면 전환마다
+// 실제 배경에 맞게 갱신. theme-color 메타태그(구형 사파리·안드로이드 크롬용)와 함께
+// body 배경색도 같이 바꿈 — iOS 26 사파리는 theme-color 지원을 없애고 대신 body의
+// background-color를 그대로 상태바/탭 틴트 색으로 읽어가므로, 이걸 안 해두면 최신
+// 아이폰에서는 상태바 색이 전혀 안 바뀜
 const THEME_COLOR_LIGHT = '#fbf6ee';
 const THEME_COLOR_DARK = '#1c1a16';
 const DARK_SCREENS = new Set(['language-select', 'gate-appear']);
@@ -102,10 +105,10 @@ function showScreen(name) {
     if (isActive) sec.scrollTop = 0;
   });
 
+  const color = DARK_SCREENS.has(name) ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
   const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeColorMeta) {
-    themeColorMeta.setAttribute('content', DARK_SCREENS.has(name) ? THEME_COLOR_DARK : THEME_COLOR_LIGHT);
-  }
+  if (themeColorMeta) themeColorMeta.setAttribute('content', color);
+  document.body.style.backgroundColor = color;
 }
 
 // ============================================================
