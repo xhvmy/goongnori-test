@@ -2,7 +2,7 @@
 //  sw.js — 궁노리 오프라인 캐시
 // ============================================================
 
-const CACHE_NAME = 'goongnori-v6';
+const CACHE_NAME = 'goongnori-v7';
 
 const APP_SHELL = [
   'index.html',
