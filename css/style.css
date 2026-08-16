@@ -446,6 +446,11 @@ button {
   padding: calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-top, 0px)) clamp(20px, 8.53vw, 38px) calc(clamp(20px, 8.53vw, 38px) + env(safe-area-inset-bottom, 0px));
 }
 
+/* 데스크톱(>=900px)에서만 header+buttons를 하나의 우측 패널로 묶는 래퍼 — display:contents라
+   모바일/태블릿에서는 레이아웃에 전혀 관여하지 않고 header/buttons가 그대로 .lang-select의
+   직계 flex 자식처럼 동작함(기존 gap 간격 그대로 유지) */
+.lang-select__panel { display: contents; }
+
 .lang-select__header {
   position: relative;
   z-index: 2;
@@ -459,6 +464,10 @@ button {
   width: clamp(112px, 39.5vw, 175px);
   height: auto;
 }
+
+/* 어두운 스크림 위 라이트 워드마크 vs 크림 패널 위 다크 워드마크 — 사진 위/카드 위 두 배경에서
+   둘 다 읽히게 배경에 따라 스위칭 (기본은 모바일/태블릿의 사진+스크림 배경용 라이트 버전) */
+.lang-select__logo--dark { display: none; }
 
 .lang-select__subtitle {
   display: flex;
@@ -1098,6 +1107,119 @@ button {
   .gate-pin__content { gap: clamp(12px, 3vw, 32px); }
   .gate-pin__top { gap: clamp(8px, 2vw, 22px); }
   .closing { gap: clamp(16px, 3vw, 36px); }
+}
+
+/* ============================================================
+   PC 전용 레이아웃 — 진짜 넓은 데스크톱 (>=900px), 6개 화면 전부
+   태블릿/폴더블 펼침(560~899px)은 위 미디어쿼리처럼 모바일형 폭-꽉-채움 레이아웃을 그대로
+   쓰고, 진짜 데스크톱만 화면별로 둘 중 하나로 전환:
+   (1) 사진이 있는 화면(Gate 등장/Language Select) → 사진 좌 58% / 콘텐츠 우 2단 분할.
+       세로로 긴 사진이 넓은 화면에서 object-fit:cover로 위/아래가 잘리면 궁이 발밑
+       기준점(dvh% 좌표)이 모바일과 달라져 계단 위에 뜬 것처럼 보이던 문제의 근본 원인이라,
+       사진을 별도 패널로 분리해 세로 크롭 자체가 안 생기게 함.
+   (2) 패턴 배경뿐인 화면(Gate PIN/이동중/Closing/Chapter) → 기존 모바일형 세로 스택은
+       그대로 두고 폭만 카드처럼 좁혀 가운데 정렬. width:100% 자식 요소들이 1440px 근처까지
+       늘어나 보이던 문제 해결.
+   ============================================================ */
+@media (min-width: 900px) {
+  .mobile-wrap {
+    max-width: 1440px;
+    margin: 0 auto;
+    background: #1c1a16;
+  }
+
+  .gate-appear {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .gate-appear .screen__bg {
+    position: static;
+    flex: 0 0 58%;
+    /* min-width:0 없으면 img의 종횡비 기반 자동 최소폭(900:598 비율 x 뷰포트 높이)이
+       flex-basis보다 커져서 flex-grow:0인데도 58%보다 훨씬 넓게 밀려남 (flexbox 자동
+       최소 크기 규칙) */
+    min-width: 0;
+    height: 100%;
+  }
+
+  .gate-appear .screen__scrim { display: none; }
+
+  .gate-appear__bottom {
+    flex: 1;
+    justify-content: center;
+    padding: 48px;
+    background: var(--color-bg-canvas);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Language Select — Gate 등장과 동일한 사진 좌 / 콘텐츠 우 2단 패턴 */
+  .lang-select {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+    gap: 0;
+  }
+
+  .lang-select .screen__bg {
+    position: static;
+    flex: 0 0 58%;
+    min-width: 0;
+    height: 100%;
+  }
+
+  .lang-select .screen__scrim { display: none; }
+
+  .lang-select__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: clamp(24px, 6.9dvh, 66px);
+    padding: 48px;
+    background: var(--color-bg-canvas);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* 사진 위 스크림을 전제로 흰 글자였던 서브타이틀/로고 — 크림색 패널 위로 옮겨왔으니 어두운
+     버전으로 바꿔야 보임 */
+  .lang-select__subtitle { color: var(--color-text-secondary); }
+  .lang-select__logo--light { display: none; }
+  .lang-select__logo--dark { display: block; }
+
+  /* Gate PIN / 이동중 / Closing — 사진이 아니라 패턴 배경이라 2단 분할 대신, 기존 모바일형
+     세로 스택 그대로 폭만 카드처럼 좁혀서 가운데 정렬 (요소가 옆으로 안 늘어나게) */
+  .gate-pin__content {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .enroute__header,
+  .enroute__map,
+  .enroute__legend,
+  .enroute .btn-primary {
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .closing > * {
+    max-width: 420px;
+  }
+
+  /* Chapter — 읽기 편한 폭으로 캡핑한 가운데 정렬 기사형 컬럼 */
+  .chapter__hero,
+  .chapter__body {
+    max-width: 480px;
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 /* ============================================================
