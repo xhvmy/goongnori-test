@@ -1122,12 +1122,6 @@ button {
        늘어나 보이던 문제 해결.
    ============================================================ */
 @media (min-width: 900px) {
-  .mobile-wrap {
-    max-width: 1440px;
-    margin: 0 auto;
-    background: #1c1a16;
-  }
-
   .gate-appear {
     flex-direction: row;
     align-items: stretch;
